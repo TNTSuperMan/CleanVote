@@ -1,4 +1,4 @@
-import './App.scss'
+import './Home.scss'
 import { Turnstile } from '../components/Turnstile'
 
 export const Home = () => <>
