@@ -1,0 +1,81 @@
+@keyframes title {
+    0%{
+        color: red;
+        transform: rotate(10deg);
+        letter-spacing: 10px;
+    }
+    10%{
+        color: bloe;
+        transform: rotate(-10deg);
+    }
+    20%{
+        color: green;
+        transform: rotate(10deg);
+    }
+    30%{
+        color: yellow;
+        transform: rotate(-10deg);
+        letter-spacing: 0px;
+    }
+    40%{
+        color: red;
+        transform: rotate(10deg);
+    }
+    50%{
+        color: blue;
+        transform: rotate(-10deg);
+    }
+    60%{
+        color: green;
+        transform: rotate(10deg);
+        letter-spacing: 10px;
+    }
+    70%{
+        color: yellow;
+        transform: rotate(-10deg);
+    }
+    80%{
+        color: red;
+        transform: rotate(10deg);
+    }
+    90%{
+        color: blue;
+        transform: rotate(-10deg);
+        letter-spacing: 0px;
+    }
+    100%{
+        color: red;
+        transform: rotate(10deg);
+        letter-spacing: 10px;
+    }
+}
+.ts-container{
+    background: linear-gradient(180deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    justify-content: center;
+
+    border: 20px #00f double;
+
+    h2{
+        animation: title 2s linear infinite;
+        text-align: center;
+    }
+    .ts-main{
+        background: radial-gradient(#f0f, #00f, #0ff, #0f0, #ff0, #f00, #f00);
+        width: 90%;
+        height: 150px;
+        display: flex;
+        
+        align-items: center;
+        align-content: center;
+        justify-items: center;
+        justify-content: center;
+
+        border-radius: 40px;
+        border: 10px #fff dashed;
+    }
+}
