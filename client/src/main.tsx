@@ -1,3 +1,4 @@
+import './style.scss'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Home } from './pages/Home.tsx'
