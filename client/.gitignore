@@ -8,6 +8,7 @@
 .env
 .env
 .env
+.env.production
 # Logs
 logs
 *.log

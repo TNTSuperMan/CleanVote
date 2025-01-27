@@ -6,8 +6,7 @@
     "scripts": {
         "deploy": "wrangler deploy --minify",
         "dev": "bun scripts/dev.ts",
-        "dev:client": "vite",
-        "dev:server": "wrangler dev",
+        "wrangler": "wrangler dev",
         "build": "tsc -b && vite build",
         "lint": "eslint ."
     },
