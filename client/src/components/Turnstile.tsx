@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./Turnstile.scss"
 import ReactTurnstile from 'react-turnstile';
 
-export const Turnstile = ({onVerify}: {onVerify: (token?: string) => void}) => {
+export const UncoolTurnstile = ({onVerify}: {onVerify: (token?: string) => void}) => {
     const [token, setToken] = useState<string | undefined>();
     const [isSupported, setIsSupported] = useState<boolean>(true);
     useEffect(()=>{
