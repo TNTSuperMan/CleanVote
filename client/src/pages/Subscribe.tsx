@@ -15,8 +15,8 @@ export const Subscribe = () => {
         }else if(description.length > 1024){
             setError("説明が長すぎます。");
         }else{
-            setError("");        
-            fetch("/api/subscribe", {
+            setError("");
+            fetch(import.meta.env.VITE_API_KEY + "/subscribe", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
