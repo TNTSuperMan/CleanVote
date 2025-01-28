@@ -14,7 +14,6 @@ app.post('/subscribe', c =>
     if(typeof body !== "object" || typeof body.token !== "string" || typeof body.title !== "string" || typeof body.description !== "string"){
       throw new HTTPException(400, { message: "Invalid JSON props" });
     }else{
-      const x = <T>(a:T):T => (console.log(a),a)
       return fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
         body: JSON.stringify({
           secret: c.env.TURNSTILE_SECRET_KEY,
@@ -26,7 +25,6 @@ app.post('/subscribe', c =>
         method: "POST"
       }).then<{success: boolean}>(e=>e.json())
       .then(e=>{
-        console.log(e)
         if(e.success){
           return c.text("You are human!")
         }else{
