@@ -40,10 +40,10 @@ export const Subscribe = () => {
                     },
                     body: JSON.stringify({title, description, token, options}),
                     cache: "no-cache"
-                }).then(e=>new Promise<[number, string]>(res=>e.text().then(t=>res([e.status, t]))))
+                }).then(e=>new Promise<[number, {message: string}]>(res=>e.json().then(t=>res([e.status, t]))))
                 .then(e=>{
                     if(e[0] == 400){
-                        setError("サーバーエラー：" + e[1]);
+                        setError("サーバーエラー：" + e[1].message);
                     }else{
                         //TODO:成功コード
                     }

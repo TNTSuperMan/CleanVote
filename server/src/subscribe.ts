@@ -37,7 +37,7 @@ app.post('/subscribe', c =>
       }).then<{success: boolean}>(e=>e.json())
       .then(e=>{
         if(e.success){//TODO:管理トークン等
-          return c.text("You are human!")
+          return c.json({message:"You are human!"})
         }else{
           return c.json({message:"あなたはロボットです。"},400)
         }
