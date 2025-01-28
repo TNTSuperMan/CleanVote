@@ -8,12 +8,22 @@ export const Subscribe = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [error, setError] = useState("");
+    const {current: encoder} = useRef(new TextEncoder);
+    const [titlelen, setTitlelen] = useState(0);
+    useEffect(()=>{
+        setTitlelen(encoder.encode(title).length);
+    },[title, encoder])
+    const [desclen, setDesclen] = useState(0);
+    useEffect(()=>{
+        setDesclen(encoder.encode(description).length);
+    },[description, encoder])
+
     const send = () => {
         if(!token){
             setError("CAPCHAに失敗しました。");
-        }else if(title.length > 256){
+        }else if(titlelen > 256){
             setError("タイトルが長すぎます。");
-        }else if(description.length > 1024){
+        }else if(desclen > 1024){
             setError("説明が長すぎます。");
         }else{
             setError("");
@@ -27,15 +37,6 @@ export const Subscribe = () => {
             })
         }
     }
-    const {current: encoder} = useRef(new TextEncoder);
-    const [titlelen, setTitlelen] = useState(0);
-    useEffect(()=>{
-        setTitlelen(encoder.encode(title).length);
-    },[title, encoder])
-    const [desclen, setDesclen] = useState(0);
-    useEffect(()=>{
-        setDesclen(encoder.encode(description).length);
-    },[description, encoder])
 
     return <div className="subscribe">
         <h1>登録フォーム</h1>
