@@ -39,7 +39,7 @@ app.post('/subscribe', c =>
         if(e.success){//TODO:管理トークン等
           return c.json({message:"You are human!"})
         }else{
-          return c.json({message:"あなたはロボットです。"},400)
+          return c.json({message:"Turnstileに失敗しました"},400)
         }
       })
     }

@@ -23,7 +23,7 @@ export const Subscribe = () => {
 
     const send = () => {
         if(!token){
-            setError("CAPCHAに失敗しました。");
+            setError("Turnstileに失敗しました。");
         }else if(titlelen > 256){
             setError("タイトルが長すぎます。");
         }else if(desclen > 1024){
