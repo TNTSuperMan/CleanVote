@@ -9,5 +9,5 @@ export const Home = () => <div className="home">
   <h2>Cloudflare Turnstileとは？</h2>
   <p>Turnstileとは、Cloudflareが作ったボット判定のプログラムです。(俗にいうCAPCHA)</p>
   <h2>Cloudflare Turnstileのメリット</h2>
-  <ul><li>無料</li><li>信頼できる</li></ul>
+  <ul><li>無料</li><li>信頼できる</li><li>広告の最適化に悪用されない</li></ul>
 </div>
