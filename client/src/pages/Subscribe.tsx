@@ -64,7 +64,7 @@ export const Subscribe = () => {
         
         選択肢
         <ul>
-            {options.map((e,i)=><li>
+            {options.map((e,i)=><li key={i}>
                 <button onClick={()=>setOptions(options.toSpliced(i, 1))}>X</button>
                 (<span style={{
                     color: encoder.encode(e).length > 256 ? "red" : "black"
