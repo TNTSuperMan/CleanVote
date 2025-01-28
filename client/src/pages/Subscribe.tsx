@@ -49,8 +49,16 @@ export const Subscribe = () => {
         <h1>登録フォーム</h1>
         <Link to="/">戻る</Link><br/>
         {error ? <div className="err">{error}</div> : <></>}
-        タイトル(長さ：{titlelen.toString()}b / 256b)：<input type="text" value={title} onChange={e=>setTitle(e.target.value)} /><br></br>
-        説明(長さ：{desclen.toString()}b / 1024b)<textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="説明を入力" />
+
+        タイトル(<span style={{
+            color: titlelen > 256 ? "red" : "black"
+        }}>長さ：{titlelen.toString()}b / 256b</span>)：
+        <input type="text" value={title} onChange={e=>setTitle(e.target.value)} /><br></br>
+
+        説明(<span style={{
+            color: desclen > 1024 ? "red" : "black"
+        }}>長さ：{desclen.toString()}b / 1024b</span>)<textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="説明を入力" />
+        
         <UncoolTurnstile onVerify={setToken}/>
         <button onClick={send}>送信</button>
     </div>
