@@ -40,7 +40,7 @@ export const Subscribe = () => {
     return <div className="subscribe">
         <h1>登録フォーム</h1>
         <Link to="/">戻る</Link><br/>
-        {error ? <div className="err"></div> : <></>}
+        {error ? <div className="err">{error}</div> : <></>}
         タイトル(長さ：{titlelen.toString()}b / 256b)：<input type="text" value={title} onChange={e=>setTitle(e.target.value)} /><br></br>
         説明(長さ：{desclen.toString()}b / 1024b)<textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="説明を入力" />
         <UncoolTurnstile onVerify={setToken}/>
