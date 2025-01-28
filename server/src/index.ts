@@ -1,5 +1,4 @@
 import { Hono } from 'hono'
-import { env } from 'hono/adapter';
 import { cors } from 'hono/cors';
 import { HTTPException } from 'hono/http-exception'
 type Env = { TURNSTILE_SECRET_KEY: string };
