@@ -16,12 +16,13 @@ export const Subscribe = () => {
             setError("説明が長すぎます。");
         }else{
             setError("");
-            fetch(import.meta.env.VITE_API_KEY + "/subscribe", {
-                method: "POST",
+            fetch(new URL("/subscribe",import.meta.env.VITE_API_KEY), {
+                method: "post",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({title, description, token})
+                body: JSON.stringify({title, description, token}),
+                cache: "no-cache"
             })
         }
     }

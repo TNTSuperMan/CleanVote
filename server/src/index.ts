@@ -1,25 +1,32 @@
 import { Hono } from 'hono'
 import { env } from 'hono/adapter';
+import { cors } from 'hono/cors';
 import { HTTPException } from 'hono/http-exception'
 type Env = { TURNSTILE_SECRET_KEY: string };
 const app = new Hono<{ Bindings: Env }>()
 
-app.post('subscribe', c =>
+app.use("/subscribe", cors({
+  origin: ["http://localhost:4000"],
+  allowMethods: ["POST", "OPTIONS"]
+}))
+app.post('/subscribe', c =>
   c.req.json<{token: string, title: string, description: string}>().then(body=>{
     if(typeof body !== "object" || typeof body.token !== "string" || typeof body.title !== "string" || typeof body.description !== "string"){
       throw new HTTPException(400, { message: "Invalid JSON props" });
     }else{
       const x = <T>(a:T):T => (console.log(a),a)
-      console.time("fetch")
       return fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
-        body: x(JSON.stringify({
+        body: JSON.stringify({
           secret: env<Env>(c).TURNSTILE_SECRET_KEY,
           response: body.token,
-        })),
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
         method: "POST"
       }).then<{success: boolean}>(e=>e.json())
       .then(e=>{
-        console.timeEnd("fetch")
+        console.log(e)
         if(e.success){
           return c.text("You are human!")
         }else{

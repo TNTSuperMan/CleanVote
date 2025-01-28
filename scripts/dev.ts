@@ -13,7 +13,7 @@ if(process.argv.length == 2){
         console.log("client started at http://localhost:4000");
     })
     serve({
-        fetch: app.fetch,
+        fetch: (...args)=>(console.log(args),app.fetch(...args)),
         port: 3928
     });
 }
