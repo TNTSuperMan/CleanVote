@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "deploy": "wrangler deploy --minify",
-        "client": "bun scripts/client.ts",
+        "client": "cd client && vite --port 4000",
         "server": "wrangler dev server/src/index.ts",
         "build": "tsc -b && vite build",
         "lint": "eslint ."
