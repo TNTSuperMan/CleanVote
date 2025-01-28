@@ -34,6 +34,13 @@ export const Subscribe = () => {
                 },
                 body: JSON.stringify({title, description, token}),
                 cache: "no-cache"
+            }).then(e=>new Promise<[number, string]>(res=>e.text().then(t=>res([e.status, t]))))
+            .then(e=>{
+                if(e[0] == 400){
+                    setError("サーバーエラー：" + e[1]);
+                }else{
+                    //TODO:成功コード
+                }
             })
         }
     }
