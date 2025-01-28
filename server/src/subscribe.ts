@@ -33,7 +33,7 @@ app.post('/subscribe', c =>
         if(e.success){
           return c.text("You are human!")
         }else{
-          return c.text("YOU ARE ROBOT",403)
+          return c.text("YOU ARE ROBOT",400)
         }
       })
     }
