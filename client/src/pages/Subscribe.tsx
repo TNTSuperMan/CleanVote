@@ -7,8 +7,11 @@ export const Subscribe = () => {
     const [token, setToken] = useState<string|undefined>();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [options, setOptions] = useState<string[]>([]);
+
     const [error, setError] = useState("");
     const {current: encoder} = useRef(new TextEncoder);
+
     const [titlelen, setTitlelen] = useState(0);
     useEffect(()=>{
         setTitlelen(encoder.encode(title).length);
@@ -59,6 +62,31 @@ export const Subscribe = () => {
             color: desclen > 1024 ? "red" : "black"
         }}>長さ：{desclen.toString()}b / 1024b</span>)<textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="説明を入力" />
         
+        選択肢
+        <ul>
+            {options.map((e,i)=><li>
+                <button onClick={()=>setOptions(options.toSpliced(i, 1))}>X</button>
+                (<span style={{
+                    color: encoder.encode(e).length > 256 ? "red" : "black"
+                }}>{encoder.encode(e).length}/256b</span>)
+                <input type="text" value={e} onChange={e=>{
+                    const optionsCopy = options.map(e=>e);
+                    optionsCopy[i] = e.target.value;
+                    setOptions(optionsCopy);
+                }} />
+            </li>)}
+            <li>
+                <button onClick={()=>{
+                    if(options.length >= 32){
+                        setError("選択肢が多すぎます。");
+                        setTimeout(()=>setError(""), 1000)
+                    }else{
+                        setOptions([...options, ""]);
+                    }
+                }}>+</button>
+            </li>
+        </ul>
+
         <UncoolTurnstile onVerify={setToken}/>
         <button onClick={send}>送信</button>
     </div>
