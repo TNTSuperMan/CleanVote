@@ -5,8 +5,8 @@
     "type": "module",
     "scripts": {
         "deploy": "wrangler deploy --minify",
-        "dev": "bun scripts/dev.ts",
-        "wrangler": "wrangler dev",
+        "client": "bun scripts/client.ts",
+        "server": "wrangler dev server/src/index.ts",
         "build": "tsc -b && vite build",
         "lint": "eslint ."
     },

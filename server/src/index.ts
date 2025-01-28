@@ -17,7 +17,7 @@ app.post('/subscribe', c =>
       const x = <T>(a:T):T => (console.log(a),a)
       return fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
         body: JSON.stringify({
-          secret: env<Env>(c).TURNSTILE_SECRET_KEY,
+          secret: c.env.TURNSTILE_SECRET_KEY,
           response: body.token,
         }),
         headers: {
