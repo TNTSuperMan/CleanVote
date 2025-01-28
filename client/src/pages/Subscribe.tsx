@@ -26,7 +26,7 @@ export const Subscribe = () => {
             setError("Turnstileに失敗しました。");
         }else if(titlelen > 256){
             setError("タイトルが長すぎます。");
-        }else if(desclen > 1024){
+        }else if(desclen > 688){
             setError("説明が長すぎます。");
         }else{
             if(options.some(e=>encoder.encode(e).length > 256)){
@@ -63,8 +63,8 @@ export const Subscribe = () => {
         <input type="text" value={title} onChange={e=>setTitle(e.target.value)} /><br></br>
 
         説明(<span style={{
-            color: desclen > 1024 ? "red" : "black"
-        }}>長さ：{desclen.toString()}b / 1024b</span>)<textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="説明を入力" />
+            color: desclen > 688 ? "red" : "black"
+        }}>長さ：{desclen.toString()}b / 688b</span>)<textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="説明を入力" />
         
         選択肢
         <ul>

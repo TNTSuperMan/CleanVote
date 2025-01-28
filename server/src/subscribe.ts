@@ -22,7 +22,7 @@ app.post('/subscribe', c =>
       if(encoder.encode(body.title).length > 256)
         return new Promise<Response>(res=>
           res(c.json({message:"タイトルが長すぎます"},400)));
-      if(encoder.encode(body.description).length > 1024)
+      if(encoder.encode(body.description).length > 688)
         return new Promise<Response>(res=>
           res(c.json({message:"説明が長すぎます"},400)));
       return fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
