@@ -29,22 +29,26 @@ export const Subscribe = () => {
         }else if(desclen > 1024){
             setError("説明が長すぎます。");
         }else{
-            setError("");
-            fetch(new URL("/subscribe",import.meta.env.VITE_API_KEY), {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({title, description, token}),
-                cache: "no-cache"
-            }).then(e=>new Promise<[number, string]>(res=>e.text().then(t=>res([e.status, t]))))
-            .then(e=>{
-                if(e[0] == 400){
-                    setError("サーバーエラー：" + e[1]);
-                }else{
-                    //TODO:成功コード
-                }
-            })
+            if(options.some(e=>encoder.encode(e).length > 256)){
+                setError("選択肢が長すぎます")
+            }else{
+                setError("");
+                fetch(new URL("/subscribe",import.meta.env.VITE_API_KEY), {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({title, description, token}),
+                    cache: "no-cache"
+                }).then(e=>new Promise<[number, string]>(res=>e.text().then(t=>res([e.status, t]))))
+                .then(e=>{
+                    if(e[0] == 400){
+                        setError("サーバーエラー：" + e[1]);
+                    }else{
+                        //TODO:成功コード
+                    }
+                })
+            }
         }
     }
 
