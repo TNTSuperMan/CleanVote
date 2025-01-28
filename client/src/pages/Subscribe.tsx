@@ -38,7 +38,7 @@ export const Subscribe = () => {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({title, description, token}),
+                    body: JSON.stringify({title, description, token, options}),
                     cache: "no-cache"
                 }).then(e=>new Promise<[number, string]>(res=>e.text().then(t=>res([e.status, t]))))
                 .then(e=>{

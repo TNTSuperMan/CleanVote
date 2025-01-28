@@ -9,8 +9,14 @@ app.use("/subscribe", cors({
   allowMethods: ["POST", "OPTIONS"]
 }))
 app.post('/subscribe', c =>
-  c.req.json<{token: string, title: string, description: string}>().then(body=>{
-    if(typeof body !== "object" || typeof body.token !== "string" || typeof body.title !== "string" || typeof body.description !== "string"){
+  c.req.json<{token: string, title: string, description: string, options: string[]}>().then(body=>{
+    if(
+      typeof body !== "object" ||
+      typeof body.token !== "string" ||
+      typeof body.title !== "string" ||
+      typeof body.description !== "string" ||
+      !Array.isArray(body.options) ||
+      body.options.some(e=>typeof e != "string")){
       throw new HTTPException(400, { message: "無効なJSON形式" });
     }else{
       if(encoder.encode(body.title).length > 256)
