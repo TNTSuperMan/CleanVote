@@ -2,6 +2,7 @@ import { cors } from 'hono/cors';
 import { HTTPException } from 'hono/http-exception'
 import { app } from './app';
 import Cloudflare from 'cloudflare';
+import { sha256 } from 'hono/utils/crypto';
 
 const encoder = new TextEncoder;
 
@@ -43,14 +44,25 @@ app.post('/subscribe', c =>
           apiKey: c.env.TOKEN,
           apiEmail: c.env.EMAIL
         })
-        client.d1.database.query(c.env.DB_ID, {
+        const accesstoken = crypto.randomUUID();
+        const pval = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
+        const phash = await sha256(pval);
+        if(!phash) throw new HTTPException(500, { message: "パスワードの生成に失敗しました" });
+        const qres = await client.d1.database.query(c.env.DB_ID, {
           account_id: c.env.ACCOUNT_ID,
-          sql: "SELECT",
+          sql: 'INSERT INTO [votes] ("token", "pass", "title", "description", "option") VALUES (?,?,?,?,?)',
           params: [
-            
+            accesstoken, phash, body.title, body.description,
+            JSON.stringify(body.options)
           ]
         })
-        return c.json({message:"You are human!"})
+        
+        return c.json({
+          message:"Okay",
+          password: pval,
+          token: accesstoken,
+          success: qres[0]?.success
+        })
       }
     }
   })
