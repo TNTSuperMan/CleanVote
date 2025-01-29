@@ -4,6 +4,7 @@ import { app } from './app';
 import Cloudflare from 'cloudflare';
 import { sha256 } from 'hono/utils/crypto';
 import { getConnInfo } from 'hono/cloudflare-workers';
+import { getCookie } from 'hono/cookie';
 
 const encoder = new TextEncoder;
 
@@ -35,11 +36,13 @@ app.post('/subscribe', c =>
         throw new HTTPException(400, { message: "選択肢が長すぎます" });
       
       const cinfo = getConnInfo(c);
+      console.log(cinfo.remote.address)
       const tsres = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
         body: JSON.stringify({
           secret: c.env.TURNSTILE_SECRET_KEY,
           response: body.token,
-          remoteip: cinfo.remote.address
+          remoteip: cinfo.remote.address,
+          idempotency_key: getCookie(c, "id")
         }),
         headers: { "Content-Type": "application/json" },
         method: "POST"}).then<{success: boolean}>(e=>e.json())
