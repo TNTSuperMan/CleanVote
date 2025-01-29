@@ -1,6 +1,7 @@
 import { cors } from 'hono/cors';
 import { HTTPException } from 'hono/http-exception'
 import { app } from './app';
+import Cloudflare from 'cloudflare';
 
 const encoder = new TextEncoder;
 
@@ -36,7 +37,18 @@ app.post('/subscribe', c =>
         method: "POST"
       }).then<{success: boolean}>(e=>e.json())
       .then(e=>{
-        if(e.success){//TODO:管理トークン等
+        if(e.success){
+          const client = new Cloudflare({
+            apiKey: c.env.TOKEN,
+            apiEmail: c.env.EMAIL
+          })
+          client.d1.database.query(c.env.DB_ID, {
+            account_id: c.env.ACCOUNT_ID,
+            sql: "SELECT",
+            params: [
+              
+            ]
+          })
           return c.json({message:"You are human!"})
         }else{
           return c.json({message:"Turnstileに失敗しました"},400)
