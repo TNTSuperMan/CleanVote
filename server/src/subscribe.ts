@@ -41,7 +41,7 @@ app.post('/subscribe', c =>
         throw new HTTPException(400, { message: "Turnstileに失敗しました" });
       }else{
         const client = new Cloudflare({
-          apiKey: c.env.TOKEN,
+          apiKey: c.env.WRITE_TOKEN,
           apiEmail: c.env.EMAIL
         })
         const accesstoken = crypto.randomUUID();
