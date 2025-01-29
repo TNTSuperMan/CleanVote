@@ -3,6 +3,7 @@ import { HTTPException } from 'hono/http-exception'
 import { app } from './app';
 import Cloudflare from 'cloudflare';
 import { sha256 } from 'hono/utils/crypto';
+import { getConnInfo } from 'hono/cloudflare-workers';
 
 const encoder = new TextEncoder;
 
@@ -33,10 +34,12 @@ app.post('/subscribe', c =>
       if(body.options.length > 32 || body.options.some(e=>encoder.encode(e).length > 256))
         throw new HTTPException(400, { message: "選択肢が長すぎます" });
       
+      const cinfo = getConnInfo(c);
       const tsres = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
         body: JSON.stringify({
           secret: c.env.TURNSTILE_SECRET_KEY,
           response: body.token,
+          remoteip: cinfo.remote.address
         }),
         headers: { "Content-Type": "application/json" },
         method: "POST"}).then<{success: boolean}>(e=>e.json())
