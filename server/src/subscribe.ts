@@ -25,7 +25,7 @@ app.post('/subscribe', c =>
     else{
       if(encoder.encode(body.title).length > 256)
         throw new HTTPException(400, { message: "タイトルが長すぎます" });
-      
+
       if(encoder.encode(body.description).length > 688)
         throw new HTTPException(400, { message: "説明が長すぎます" });
       
@@ -34,9 +34,7 @@ app.post('/subscribe', c =>
           secret: c.env.TURNSTILE_SECRET_KEY,
           response: body.token,
         }),
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         method: "POST"}).then<{success: boolean}>(e=>e.json())
       if(!tsres.success){
         throw new HTTPException(400, { message: "Turnstileに失敗しました" });
