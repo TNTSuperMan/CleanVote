@@ -29,6 +29,9 @@ app.post('/subscribe', c =>
 
       if(encoder.encode(body.description).length > 688)
         throw new HTTPException(400, { message: "説明が長すぎます" });
+
+      if(body.options.length > 32 || body.options.some(e=>encoder.encode(e).length > 256))
+        throw new HTTPException(400, { message: "選択肢が長すぎます" });
       
       const tsres = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
         body: JSON.stringify({
