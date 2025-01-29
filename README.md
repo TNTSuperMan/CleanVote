@@ -29,4 +29,4 @@ $ npm run dev
 クライアント側には.envに`VITE_TURNSTILE_KEY`にTurnstileのサイトキーを入れてください。  
 .env.productionには`VITE_API_KEY`にバックエンドのREST APIのURLを入れてください。
 
-サーバー側には.dev.varsの`TURNSTILE_SECRET_KEY`にTurnstileのシークレットキーを入れてください。
+サーバー側の.dev.varsにはapp.tsにある環境変数の宣言を見て察してください。
