@@ -10,7 +10,10 @@ app.use("/subscribe", cors({
   allowMethods: ["POST", "OPTIONS"]
 }))
 app.post('/subscribe', c =>
-  c.req.json<{token: string, title: string, description: string, options: string[]}>().then(body=>{
+  c.req.json<{token: string, title: string, description: string, options: string[]}>()
+  .catch(()=>{
+    throw new HTTPException(400, { message: "無効なJSON" });
+  }).then(body=>{
     if(
       typeof body !== "object" ||
       typeof body.token !== "string" ||
@@ -23,12 +26,10 @@ app.post('/subscribe', c =>
 
     }else{
       if(encoder.encode(body.title).length > 256)
-        return new Promise<Response>(res=>
-          res(c.json({message:"タイトルが長すぎます"},400)));
+        throw new HTTPException(400, { message: "タイトルが長すぎます" });
       
       if(encoder.encode(body.description).length > 688)
-        return new Promise<Response>(res=>
-          res(c.json({message:"説明が長すぎます"},400)));
+        throw new HTTPException(400, { message: "説明が長すぎます" });
       
       return fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
         body: JSON.stringify({
@@ -42,7 +43,7 @@ app.post('/subscribe', c =>
       .then<{success: boolean}>(e=>e.json())
       .then(e=>{
         if(!e.success){
-          return c.json({message:"Turnstileに失敗しました"},400)
+          throw new HTTPException(400, { message: "Turnstileに失敗しました" });
         }else{
           const client = new Cloudflare({
             apiKey: c.env.TOKEN,
@@ -59,7 +60,5 @@ app.post('/subscribe', c =>
         }
       })
     }
-  }).catch(()=>{
-    throw new HTTPException(400, { message: "無効なJSON" });
   })
 )
