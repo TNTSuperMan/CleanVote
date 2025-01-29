@@ -18,14 +18,18 @@ app.post('/subscribe', c =>
       typeof body.description !== "string" ||
       !Array.isArray(body.options) ||
       body.options.some(e=>typeof e != "string")){
+      
       throw new HTTPException(400, { message: "無効なJSON形式" });
+
     }else{
       if(encoder.encode(body.title).length > 256)
         return new Promise<Response>(res=>
           res(c.json({message:"タイトルが長すぎます"},400)));
+      
       if(encoder.encode(body.description).length > 688)
         return new Promise<Response>(res=>
           res(c.json({message:"説明が長すぎます"},400)));
+      
       return fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
         body: JSON.stringify({
           secret: c.env.TURNSTILE_SECRET_KEY,
@@ -34,10 +38,12 @@ app.post('/subscribe', c =>
         headers: {
           "Content-Type": "application/json",
         },
-        method: "POST"
-      }).then<{success: boolean}>(e=>e.json())
+        method: "POST"})
+      .then<{success: boolean}>(e=>e.json())
       .then(e=>{
-        if(e.success){
+        if(!e.success){
+          return c.json({message:"Turnstileに失敗しました"},400)
+        }else{
           const client = new Cloudflare({
             apiKey: c.env.TOKEN,
             apiEmail: c.env.EMAIL
@@ -50,8 +56,6 @@ app.post('/subscribe', c =>
             ]
           })
           return c.json({message:"You are human!"})
-        }else{
-          return c.json({message:"Turnstileに失敗しました"},400)
         }
       })
     }
