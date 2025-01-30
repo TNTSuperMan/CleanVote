@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "deploy": "wrangler deploy --minify",
+        "deploy": "wrangler deploy server/src/index.ts --minify",
         "client": "cd client && vite --port 4000",
         "server": "wrangler dev server/src/index.ts",
         "build": "tsc -b && vite build",
