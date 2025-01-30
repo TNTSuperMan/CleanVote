@@ -16,11 +16,11 @@
     .widget{
         display: flex;
         flex-direction: row;
+        align-items: stretch;
+        grid-template-columns: min-content 50%;
         @media screen and (max-width: 500px) {
             flex-direction: column;
         }
-        align-items: stretch;
-        grid-template-columns: min-content 50%;
         div{
             padding: 20px;
             margin: 5px;
