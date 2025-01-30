@@ -67,10 +67,8 @@ app.post('/subscribe', c =>
         })
         
         return c.json({
-          message:"Okay",
-          password: pval,
-          token: accesstoken,
-          success: qres[0]?.success
+          pass: pval,
+          token: accesstoken
         })
       }
     }
