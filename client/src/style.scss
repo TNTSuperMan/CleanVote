@@ -1,3 +1,16 @@
 :root{
     font-family: sans-serif;
 }
+.button{
+    background: #0dd;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 17px;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.button:hover{
+    background: #0ff;
+}
