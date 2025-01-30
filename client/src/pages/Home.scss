@@ -1,3 +1,38 @@
 .home{
     text-align: center;
+    .title{
+        display: flex;
+        align-items: center;
+        align-content: center;
+        justify-items: center;
+        justify-content: center;
+        img{
+            width: 100px;
+        }
+        h1{
+            display: inline;
+        }
+    }
+    .widget{
+        display: flex;
+        flex-direction: row;
+        @media screen and (max-width: 500px) {
+            flex-direction: column;
+        }
+        align-items: stretch;
+        grid-template-columns: min-content 50%;
+        div{
+            padding: 20px;
+            margin: 5px;
+            border-radius: 10px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            align-content: center;
+            justify-items: center;
+            justify-content: center;
+            line-height: 1.5;
+            letter-spacing: 1px;
+        }
+    }
 }

@@ -1,13 +1,42 @@
 import { Link } from 'react-router-dom'
+import Icon from '../assets/CleanVote.png'
 import './Home.scss'
 
 export const Home = () => <div className="home">
-  <h1>CleanVote</h1>
+  <div className="title">
+    <img src={Icon} alt="" />
+    <h1>CleanVote</h1>
+  </div>
   <p>荒らし対策を施したりした投票アプリです！</p>
-  <p>大量投票防止のためCloudflare Turnstileを使用しています。</p>
-  <Link to="/subscribe">投票を始める</Link>
-  <h2>Cloudflare Turnstileとは？</h2>
-  <p>Turnstileとは、Cloudflareが作ったボット判定のプログラムです。(俗にいうCAPCHA)</p>
-  <h2>Cloudflare Turnstileのメリット</h2>
-  <ul><li>無料</li><li>信頼できる</li><li>広告の最適化に悪用されない</li></ul>
+  <Link className="button" to="/subscribe">投票を始める</Link>
+  <div className="widget" style={{margin:"20px 0 0 0"}}>
+    <div style={{backgroundColor:"lightblue"}}>
+      <h1>Cloudflare Turnstile</h1>
+    </div>
+    <div style={{backgroundColor:"lightgreen"}}>
+      Cloudflare Turnstileとは、CAPTCHAに変わるボット検証ツールです。
+      これは時間を浪費することなく、労力をかける必要もありません。
+      また、広告のためにデータを収集することはありません。
+    </div>
+  </div>
+  <div className="widget">
+    <div style={{backgroundColor:"lightgreen"}}>
+      投票データはIPアドレスと投票先と選択肢によって選別されて
+      疑似的にキューにプッシュします。これにより
+      同一IPアドレス・同一選択肢に対する攻撃を吸収することが可能で、
+      なおかつ同一IPアドレスでの別人の投票も可能になっています。
+    </div>
+    <div style={{backgroundColor:"lightblue"}}>
+      <h1>疑似キュー</h1>
+    </div>
+  </div>
+  <div className="widget">
+    <div style={{backgroundColor:"lightblue"}}>
+      <h1>攻撃に強い</h1>
+    </div>
+    <div style={{backgroundColor:"lightgreen"}}>
+      CloudflareのサービスはDDos攻撃に対して強く、
+      ユーザーは快適な投票体験を得ることができます。
+    </div>
+  </div>
 </div>

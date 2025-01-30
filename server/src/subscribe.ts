@@ -3,6 +3,8 @@ import { HTTPException } from 'hono/http-exception'
 import { app } from './app';
 import Cloudflare from 'cloudflare';
 import { sha256 } from 'hono/utils/crypto';
+import { getConnInfo } from 'hono/cloudflare-workers';
+import { getCookie } from 'hono/cookie';
 
 const encoder = new TextEncoder;
 
@@ -33,10 +35,14 @@ app.post('/subscribe', c =>
       if(body.options.length > 32 || body.options.some(e=>encoder.encode(e).length > 256))
         throw new HTTPException(400, { message: "選択肢が長すぎます" });
       
+      const cinfo = getConnInfo(c);
+      console.log(cinfo.remote.address)
       const tsres = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
         body: JSON.stringify({
           secret: c.env.TURNSTILE_SECRET_KEY,
           response: body.token,
+          remoteip: cinfo.remote.address,
+          idempotency_key: getCookie(c, "id")
         }),
         headers: { "Content-Type": "application/json" },
         method: "POST"}).then<{success: boolean}>(e=>e.json())
@@ -53,7 +59,7 @@ app.post('/subscribe', c =>
         if(!phash) throw new HTTPException(500, { message: "パスワードの生成に失敗しました" });
         const qres = await client.d1.database.query(c.env.DB_ID, {
           account_id: c.env.ACCOUNT_ID,
-          sql: 'INSERT INTO [votes] ("token", "pass", "title", "description", "option") VALUES (?,?,?,?,?)',
+          sql: 'INSERT INTO [ballot_boxes] ("token", "pass", "title", "description", "options") VALUES (?,?,?,?,?)',
           params: [
             accesstoken, phash, body.title, body.description,
             JSON.stringify(body.options)
@@ -61,10 +67,8 @@ app.post('/subscribe', c =>
         })
         
         return c.json({
-          message:"Okay",
-          password: pval,
-          token: accesstoken,
-          success: qres[0]?.success
+          pass: pval,
+          token: accesstoken
         })
       }
     }

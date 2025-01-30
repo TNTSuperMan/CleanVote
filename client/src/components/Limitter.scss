@@ -1,0 +1,11 @@
+span.limitter{
+    display: inline-block;
+    background: lightgreen;
+    margin: 3px;
+    padding: 3px;
+    border-radius: 10px;
+    transition: all 0.5s ease;
+}
+span.limitter.over{
+    background: #f55;
+}
