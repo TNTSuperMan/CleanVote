@@ -48,6 +48,7 @@ export const Subscribe = () => {
                         setError("サーバーエラー: " + e[1])
                     }else{
                         //TODO:成功コード
+                        setToken(undefined);
                     }
                 })
             }
