@@ -59,7 +59,7 @@ app.post('/subscribe', c =>
         if(!phash) throw new HTTPException(500, { message: "パスワードの生成に失敗しました" });
         const qres = await client.d1.database.query(c.env.DB_ID, {
           account_id: c.env.ACCOUNT_ID,
-          sql: 'INSERT INTO [votes] ("token", "pass", "title", "description", "option") VALUES (?,?,?,?,?)',
+          sql: 'INSERT INTO [ballot_boxes] ("token", "pass", "title", "description", "options") VALUES (?,?,?,?,?)',
           params: [
             accesstoken, phash, body.title, body.description,
             JSON.stringify(body.options)
