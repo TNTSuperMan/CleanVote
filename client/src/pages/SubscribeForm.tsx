@@ -68,22 +68,22 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
         <Link className="button" to="/">戻る</Link><br/>
         {error ? <div className="err">{error}</div> : <></>}
 
-        タイトル(<span style={{
+        タイトル<span style={{
             color: titlelen > 256 ? "red" : "black"
-        }}>長さ：{titlelen.toString()}b / 256b</span>)：
+        }}>長さ：{titlelen.toString()}b / 256b</span>：
         <input type="text" value={title} onChange={e=>setTitle(e.target.value)} /><br></br>
 
-        説明(<span style={{
+        説明<span style={{
             color: desclen > 688 ? "red" : "black"
-        }}>長さ：{desclen.toString()}b / 688b</span>)<textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="説明を入力" />
+        }}>長さ：{desclen.toString()}b / 688b</span><textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="説明を入力" />
         
         選択肢
         <ul>
             {options.map((e,i)=><li key={i}>
                 <button onClick={()=>setOptions(options.toSpliced(i, 1))}>X</button>
-                (<span style={{
+                <span style={{
                     color: encoder.encode(e).length > 256 ? "red" : "black"
-                }}>{encoder.encode(e).length}/256b</span>)
+                }}>{encoder.encode(e).length}/256b</span>
                 <input type="text" value={e} onChange={e=>{
                     const optionsCopy = options.map(e=>e);
                     optionsCopy[i] = e.target.value;
