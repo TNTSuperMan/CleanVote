@@ -9,7 +9,7 @@ import { getCookie } from 'hono/cookie';
 const encoder = new TextEncoder;
 
 app.use("/subscribe", cors({
-  origin: ["http://localhost:4000"],
+  origin: ["http://localhost:4000", "https://*.cleanvote.pages.dev/", "https://cleanvote.pages.dev/"],
   allowMethods: ["POST", "OPTIONS"]
 }))
 app.post('/subscribe', c =>
