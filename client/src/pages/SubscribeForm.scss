@@ -1,11 +1,23 @@
 .subscribe{
     textarea{
-        width: 100%;
+        width: calc(100% - 10px);
         resize: vertical;
+        padding: 5px;
+        font-size:15px;
+        border-radius: 10px;
     }
     .err{
         background: red;
         padding: 5px;
         border-radius: 10px;
+    }
+    ul{
+        li{
+            button{
+                border-radius: 10px;
+                padding: 3px 7px;
+                border: 1px #000 solid;
+            }
+        }
     }
 }

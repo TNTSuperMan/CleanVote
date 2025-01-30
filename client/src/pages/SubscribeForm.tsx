@@ -2,6 +2,7 @@ import './SubscribeForm.scss';
 import { useEffect, useRef, useState } from "react";
 import { UncoolTurnstile } from "../components/Turnstile";
 import { Link } from 'react-router-dom';
+import { Limitter } from '../components/Limitter';
 
 export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: string}) => void}) => {
     const [token, setToken] = useState<string|undefined>();
@@ -68,22 +69,17 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
         <Link className="button" to="/">戻る</Link><br/>
         {error ? <div className="err">{error}</div> : <></>}
 
-        タイトル<span style={{
-            color: titlelen > 256 ? "red" : "black"
-        }}>長さ：{titlelen.toString()}b / 256b</span>：
-        <input type="text" value={title} onChange={e=>setTitle(e.target.value)} /><br></br>
+        タイトル<Limitter len={titlelen} max={256}/>：
+        <input type="text" value={title} onChange={e=>setTitle(e.target.value)} /><br/>
 
-        説明<span style={{
-            color: desclen > 688 ? "red" : "black"
-        }}>長さ：{desclen.toString()}b / 688b</span><textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="説明を入力" />
+        説明<Limitter len={desclen} max={688}/>
+        <textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="説明を入力" />
         
         選択肢
         <ul>
             {options.map((e,i)=><li key={i}>
                 <button onClick={()=>setOptions(options.toSpliced(i, 1))}>X</button>
-                <span style={{
-                    color: encoder.encode(e).length > 256 ? "red" : "black"
-                }}>{encoder.encode(e).length}/256b</span>
+                <Limitter len={encoder.encode(e).length} max={256}/>
                 <input type="text" value={e} onChange={e=>{
                     const optionsCopy = options.map(e=>e);
                     optionsCopy[i] = e.target.value;
