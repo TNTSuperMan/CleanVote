@@ -65,7 +65,7 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
 
     return <div className="subscribe">
         <h1>登録フォーム</h1>
-        <Link to="/">戻る</Link><br/>
+        <Link className="button" to="/">戻る</Link><br/>
         {error ? <div className="err">{error}</div> : <></>}
 
         タイトル(<span style={{
