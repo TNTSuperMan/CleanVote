@@ -8,11 +8,13 @@ type Env = {
     ACCESS_TOKEN: string;
     WRITE_TOKEN: string;
     EMAIL: string;
+    ORIGIN: string; //CORS originの正規表現(テキスト方式の(new RegExp(xxx)))
 };
 export const app = new Hono<{ Bindings: Env }>()
 
 app.use("*", cors({
-  origin: ["http://localhost:4000", "https://*.cleanvote.pages.dev/", "https://cleanvote.pages.dev/"],
+  origin: (origin, c) =>
+    new RegExp(c.env.ORIGIN).test(origin) ? origin : null,
   allowHeaders: ["X-Custom-Header", "Upgrade-Insecure-Requests", "Content-type"],
   exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
   allowMethods: ["POST", "OPTIONS"],
