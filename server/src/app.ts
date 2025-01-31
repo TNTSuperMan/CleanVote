@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 
 type Env = {
     TURNSTILE_SECRET_KEY: string;
@@ -9,3 +10,8 @@ type Env = {
     EMAIL: string;
 };
 export const app = new Hono<{ Bindings: Env }>()
+
+app.use("*", cors({
+  origin: ["http://localhost:4000", "https://*.cleanvote.pages.dev/", "https://cleanvote.pages.dev/"],
+  allowMethods: ["POST", "OPTIONS"]
+}))
