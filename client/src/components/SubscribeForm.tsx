@@ -71,15 +71,17 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
         {error ? <div className="err">{error}</div> : <></>}
 
         <table>
-            <tr>
-                <td>タイトル</td>
-                <td><Limitter len={titlelen} max={256}/></td>
-                <td><input type="text" value={title} onChange={e=>setTitle(e.target.value)} /><br/></td>
-            </tr>
-            <tr>
-                <td>説明</td>
-                <td><Limitter len={desclen} max={688}/></td>
-            </tr>
+            <tbody>
+                <tr>
+                    <td>タイトル</td>
+                    <td><Limitter len={titlelen} max={256}/></td>
+                    <td><input type="text" value={title} onChange={e=>setTitle(e.target.value)} /><br/></td>
+                </tr>
+                <tr>
+                    <td>説明</td>
+                    <td><Limitter len={desclen} max={688}/></td>
+                </tr>
+            </tbody>
         </table>
         <textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="説明を入力" />
         
