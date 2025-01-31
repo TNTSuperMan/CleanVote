@@ -10,6 +10,7 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
     const [description, setDescription] = useState("");
     const [options, setOptions] = useState<string[]>([]);
 
+    const [isSending, setSending] = useState(false);
     const [error, setError] = useState("");
     const {current: encoder} = useRef(new TextEncoder);
 
@@ -33,7 +34,7 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
             if(options.some(e=>encoder.encode(e).length > 256)){
                 setError("選択肢が長すぎます")
             }else{
-                setError("");
+                setError(""); setSending(true);
                 fetch(new URL("/subscribe",import.meta.env.VITE_API_KEY), {
                     method: "post",
                     headers: {
@@ -59,7 +60,7 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
                             setError("レスポンスの読込に失敗しました。");
                         }
                     }
-                })
+                }).finally(()=>setSending(false));
             }
         }
     }
@@ -99,6 +100,8 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
         </ul>
 
         <UncoolTurnstile onVerify={setToken}/>
-        <button onClick={send}>送信</button>
+        <button onClick={isSending ? ()=>{} : send}>
+            {isSending ? "送信中..." : "送信"}
+        </button>
     </div>
 }
