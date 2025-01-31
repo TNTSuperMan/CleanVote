@@ -1,6 +1,7 @@
-name = "cleanvote_server"
-main = "src/index.ts"
+name = "cleanvote"
+main = "src/index.tsx"
 compatibility_date = "2025-01-27"
+workers_dev = false
 
 [observability.logs]
 enabled = true

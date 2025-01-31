@@ -1,4 +1,3 @@
-import { cors } from 'hono/cors';
 import { HTTPException } from 'hono/http-exception'
 import { app } from './app';
 import Cloudflare from 'cloudflare';
@@ -7,11 +6,6 @@ import { getConnInfo } from 'hono/cloudflare-workers';
 import { getCookie } from 'hono/cookie';
 
 const encoder = new TextEncoder;
-
-app.use("/subscribe", cors({
-  origin: ["http://localhost:4000"],
-  allowMethods: ["POST", "OPTIONS"]
-}))
 app.post('/subscribe', c =>
   c.req.json<{token: string, title: string, description: string, options: string[]}>()
   .catch(()=>{
