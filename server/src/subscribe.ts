@@ -39,9 +39,9 @@ app.post('/subscribe', c =>
           idempotency_key: getCookie(c, "id")
         }),
         headers: { "Content-Type": "application/json" },
-        method: "POST"}).then<{success: boolean}>(e=>e.json())
+        method: "POST"}).then<{success: boolean, "error-codes": string[]}>(e=>e.json())
       if(!tsres.success){
-        throw new HTTPException(400, { message: "Turnstileに失敗しました" });
+        throw new HTTPException(400, { message: "Turnstileに失敗しました: " + tsres['error-codes'].join(",") });
       }else{
         const client = new Cloudflare({
           apiToken: c.env.WRITE_TOKEN,
