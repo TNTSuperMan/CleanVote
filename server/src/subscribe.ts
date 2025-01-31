@@ -3,7 +3,6 @@ import { app } from './app';
 import Cloudflare from 'cloudflare';
 import { sha256 } from 'hono/utils/crypto';
 import { getConnInfo } from 'hono/cloudflare-workers';
-import { getCookie } from 'hono/cookie';
 
 const encoder = new TextEncoder;
 app.post('/subscribe', c =>
@@ -36,7 +35,6 @@ app.post('/subscribe', c =>
           secret: c.env.TURNSTILE_SECRET_KEY,
           response: body.token,
           remoteip: cinfo.remote.address,
-          idempotency_key: getCookie(c, "id")
         }),
         headers: { "Content-Type": "application/json" },
         method: "POST"}).then<{success: boolean, "error-codes": string[]}>(e=>e.json())
