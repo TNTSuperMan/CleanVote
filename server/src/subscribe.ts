@@ -30,7 +30,6 @@ app.post('/subscribe', c => {
         throw new HTTPException(400, { message: "選択肢が長すぎます" });
       
       const cinfo = getConnInfo(c);
-      console.log(cinfo.remote.address)
       const tsres = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
         body: JSON.stringify({
           secret: c.env.TURNSTILE_SECRET_KEY,
