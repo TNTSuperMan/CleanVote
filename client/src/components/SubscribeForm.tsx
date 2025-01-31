@@ -1,8 +1,8 @@
 import './SubscribeForm.scss';
 import { useEffect, useRef, useState } from "react";
-import { UncoolTurnstile } from "../components/Turnstile";
+import { UncoolTurnstile } from "./Turnstile";
 import { Link } from 'react-router-dom';
-import { Limitter } from '../components/Limitter';
+import { Limitter } from './Limitter';
 
 export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: string}) => void}) => {
     const [token, setToken] = useState<string|undefined>();
