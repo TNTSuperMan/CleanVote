@@ -13,5 +13,8 @@ export const app = new Hono<{ Bindings: Env }>()
 
 app.use("*", cors({
   origin: ["http://localhost:4000", "https://*.cleanvote.pages.dev/", "https://cleanvote.pages.dev/"],
-  allowMethods: ["POST", "OPTIONS"]
+  allowHeaders: ["X-Custom-Header", "Upgrade-Insecure-Requests", "Content-type"],
+  exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
+  allowMethods: ["POST", "OPTIONS"],
+  credentials: true,
 }))
