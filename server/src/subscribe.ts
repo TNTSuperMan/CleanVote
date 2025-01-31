@@ -5,8 +5,9 @@ import { sha256 } from 'hono/utils/crypto';
 import { getConnInfo } from 'hono/cloudflare-workers';
 
 const encoder = new TextEncoder;
-app.post('/subscribe', c =>
-  c.req.json<{token: string, title: string, description: string, options: string[]}>()
+app.post('/subscribe', c => {
+  if(c.req.raw.cf?.country != "JP") throw new HTTPException(400, { message: "日本国外IPから投票できません" })
+  return c.req.json<{token: string, title: string, description: string, options: string[]}>()
   .catch(()=>{
     throw new HTTPException(400, { message: "無効なJSON" });
   }).then(async body=>{
@@ -64,5 +65,5 @@ app.post('/subscribe', c =>
         })
       }
     }
-  })
+  })}
 )
