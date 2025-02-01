@@ -41,10 +41,9 @@ app.post('/subscribe', c => {
         const phash = await sha256(pval);
         if(!phash) throw new HTTPException(500, { message: "パスワードの生成に失敗しました" });
         d1(
-          'INSERT INTO [ballot_boxes] ("token", "pass", "title", "description", "options", "openat", "ip") VALUES (?,?,?,?,?,?,?)',[
-            accesstoken, phash, body.title, body.description,
-            JSON.stringify(body.options),
-            new Date().toISOString(), ip
+          'INSERT INTO [ballot_boxes] ("token", "createdat", "pass", "title", "description", "options", "ip") VALUES (?,?,?,?,?,?,?,?)',[
+            accesstoken, new Date().toISOString(), phash, body.title, body.description,
+            JSON.stringify(body.options), ip
           ])
         
         return c.json({
