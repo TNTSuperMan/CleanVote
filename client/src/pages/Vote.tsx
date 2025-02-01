@@ -47,6 +47,10 @@ export const Vote = () => {
   },[token, tstoken])
 
   const submit = () => {
+    if(active == -1){
+      setErr("選択してください。")
+      return;
+    }
     if(localStorage.getItem(token??"")){
       setErr("あなたは既に投票しています。");
       return;
