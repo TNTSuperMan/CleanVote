@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Subscribe } from './pages/Subscribe.tsx'
 import { About } from './pages/About.tsx'
 import { NotFound } from './pages/404.tsx'
+import { Vote } from './pages/Vote.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,6 +15,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<Home/>} />
         <Route path="/subscribe" element={<Subscribe/>} />
         <Route path="/about" element={<About/>} />
+        <Route path="/vote/:token" element={<Vote/>} />
 
         <Route path="*" element={<NotFound/>} />
       </Routes>
