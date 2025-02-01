@@ -13,5 +13,6 @@ export const d1Client = (c: Context<{Bindings: Env}>) => {
       account_id: c.env.ACCOUNT_ID,
       sql,params})
     if(!res[0].success) throw new HTTPException(500, { message: "データベース操作に失敗しました" })
+    return res[0];
   }
 }
