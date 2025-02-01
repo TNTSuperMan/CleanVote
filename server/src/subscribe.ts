@@ -40,7 +40,7 @@ app.post('/subscribe', c => {
         const pval = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
         const phash = await sha256(pval);
         if(!phash) throw new HTTPException(500, { message: "パスワードの生成に失敗しました" });
-        const qres = d1(
+        d1(
           'INSERT INTO [ballot_boxes] ("token", "pass", "title", "description", "options", "openat", "ip") VALUES (?,?,?,?,?,?,?)',[
             accesstoken, phash, body.title, body.description,
             JSON.stringify(body.options),
