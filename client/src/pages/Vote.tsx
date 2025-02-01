@@ -46,6 +46,10 @@ export const Vote = () => {
   },[token, tstoken])
 
   const submit = () => {
+    if(localStorage.getItem(token??"")){
+      setErr("あなたは既に投票しています。");
+      return;
+    }
     setSubState(true)
     fetch(new URL("/vote",import.meta.env.VITE_API_KEY),{
       method: "POST",
@@ -59,6 +63,7 @@ export const Vote = () => {
       if(e[0] !== 200){
         setErr(e[1])
       }else{
+        localStorage.setItem(token??"", "voted")
         alert("Submitted!")
       }
     })
