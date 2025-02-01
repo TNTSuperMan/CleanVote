@@ -16,10 +16,10 @@ app.post("/data",c=>{
         throw new HTTPException(400, { message: "無効なJSON" })
     else{
       const ip = getConnInfo(c).remote.address ?? "unknown";
-      /*const tsres = await Turnstile(c, body.ts, ip);
+      const tsres = await Turnstile(c, body.ts, ip);
       if(!tsres.success){
         throw new HTTPException(400, { message: "Turnstileに失敗しました: "+tsres["error-codes"].join(",") })
-      }else*/{
+      }else{
         const d1 = d1Client(c);
         const rawdata = (await d1("SELECT title, description, options FROM ballot_boxes WHERE token = ?", [body.token])).results?.[0] as {
           titile: string, description: string, options: string
