@@ -2,6 +2,7 @@ import { HTTPException } from "hono/http-exception";
 import { app } from "./app";
 import { getConnInfo } from "hono/cloudflare-workers";
 import { d1Client } from "./utils/d1";
+import { Turnstile } from "./utils/turnstile";
 
 app.post("/vote", c => {
   if(c.req.raw.cf?.country !== "JP") throw new HTTPException(400, { message: "日本国外IPから投票できません" })
@@ -17,10 +18,10 @@ app.post("/vote", c => {
         throw new HTTPException(400, { message: "無効なJSON" })
     else{
       const ip = getConnInfo(c).remote.address ?? "unknown";
-      /*const tsres = await Turnstile(c, body.token, ip);
+      const tsres = await Turnstile(c, body.token, ip);
       if(!tsres.success){
         throw new HTTPException(400, { message: "Turnstileに失敗しました: " + tsres["error-codes"].join(",") })
-      }else*/{
+      }else{
         const d1 = d1Client(c);
 
         const vfres = await d1("SELECT token FROM ballot_boxes WHERE token = ?",
