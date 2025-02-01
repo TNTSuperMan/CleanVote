@@ -6,7 +6,7 @@ import { getConnInfo } from 'hono/cloudflare-workers';
 
 const encoder = new TextEncoder;
 app.post('/subscribe', c => {
-  if(c.req.raw.cf?.country != "JP") throw new HTTPException(400, { message: "日本国外IPから操作できません" })
+  if(c.req.raw.cf?.country !== "JP") throw new HTTPException(400, { message: "日本国外IPから操作できません" })
   return c.req.json<{token: string, title: string, description: string, options: string[]}>()
   .catch(()=>{
     throw new HTTPException(400, { message: "無効なJSON" });
@@ -17,7 +17,7 @@ app.post('/subscribe', c => {
       typeof body.title !== "string" ||
       typeof body.description !== "string" ||
       !Array.isArray(body.options) ||
-      body.options.some(e=>typeof e != "string"))
+      body.options.some(e=>typeof e !== "string"))
         throw new HTTPException(400, { message: "無効なJSON形式" });
     else{
       if(encoder.encode(body.title).length > 256)
