@@ -1,7 +1,5 @@
 import { HTTPException } from "hono/http-exception";
 import { app } from "./app";
-import { Turnstile } from "./utils/turnstile";
-import { getConnInfo } from "hono/cloudflare-workers";
 import { d1Client } from "./utils/d1";
 
 app.post("/data",c=>{
