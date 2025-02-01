@@ -1,9 +1,9 @@
 import { HTTPException } from 'hono/http-exception'
 import { app } from './app';
-import Cloudflare from 'cloudflare';
 import { sha256 } from 'hono/utils/crypto';
 import { getConnInfo } from 'hono/cloudflare-workers';
 import { Turnstile } from './utils/turnstile';
+import { d1Client } from './utils/d1';
 
 const encoder = new TextEncoder;
 app.post('/subscribe', c => {
@@ -35,23 +35,17 @@ app.post('/subscribe', c => {
       if(!tsres.success){
         throw new HTTPException(400, { message: "Turnstileに失敗しました: " + tsres['error-codes'].join(",") });
       }else{
-        const client = new Cloudflare({
-          apiToken: c.env.WRITE_TOKEN,
-          apiEmail: c.env.EMAIL
-        })
+        const d1 = d1Client(c);
         const accesstoken = crypto.randomUUID();
         const pval = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
         const phash = await sha256(pval);
         if(!phash) throw new HTTPException(500, { message: "パスワードの生成に失敗しました" });
-        const qres = await client.d1.database.query(c.env.DB_ID, {
-          account_id: c.env.ACCOUNT_ID,
-          sql: 'INSERT INTO [ballot_boxes] ("token", "pass", "title", "description", "options", "openat", "ip") VALUES (?,?,?,?,?,?,?)',
-          params: [
+        const qres = d1(
+          'INSERT INTO [ballot_boxes] ("token", "pass", "title", "description", "options", "openat", "ip") VALUES (?,?,?,?,?,?,?)',[
             accesstoken, phash, body.title, body.description,
             JSON.stringify(body.options),
             new Date().toISOString(), ip
-          ]
-        })
+          ])
         
         return c.json({
           pass: pval,
