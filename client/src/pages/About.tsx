@@ -1,22 +1,42 @@
 export const About = () => {
     return <div className="about">
-        <h2>利用規約(簡易)</h2>
-        <ul>
-            <li>サービスは突然終了する可能性があります。</li>
-            <li>投票データ等は予告なく消滅させることがあります。</li>
-            <li>全ては自己責任で行ってください。</li>
-            <li>公序良俗に反する情報を送信した場合、その情報の削除や、IPアドレスブロック等を行います。</li>
-        </ul>
+        <h1>利用規約</h1>
+        <h2>0.定義</h2>
+        <table border={1}>
+          <tr><th>名称</th><th>内容</th></tr>
+          <tr><td>当サービス</td><td>CleanVoteのサービス</td></tr>
+          <tr><td>当サーバー</td><td>CleanVoteを運営するのに使われているサーバー</td></tr>
+          <tr><td>運営者</td><td>CleanVoteを運営している人</td></tr>
+        </table>
+        <h2>1.適用</h2>
+        本規約はユーザーと当サービスとの一切の関係に適用されるものとします。<br/>
+        また、本規約の解釈にあたっては日本法を準拠法とします。
+        <h2>2.禁止事項</h2>
+        当サービスの機能を用いて以下のような行為はしてはなりません。
+        <ol>
+          <li>法律に違反する行為</li>
+          <li>公序良俗に反する行為</li>
+          <li>個人を中傷する行為</li>
+          <li>当サービスを妨害する行為</li>
+          <li>著作権を侵害する行為</li>
+          <li>当サービスの機能を障害する行為</li>
+          <li>当サーバーを破壊・妨害をする行為</li>
+          <li>当サーバーへ不正アクセスをし、またはこれを試みる行為</li>
+          <li>AIの学習に使う行為</li>
+          <li>その他、運営者が不適切と判断した行為</li>
+        </ol>
+        以下のような行為を運営者が発見した場合、当サービスは予告なくその情報の消去、アクセスのブロック等をできます。
+        <h2>3.変更</h2>
+        運営者はユーザーの同意に関わらず自由に規約等を変更できます。<br/>
+        また、運営者は許可なく投票データ等の削除等ができます。
         
-        追加で、<a href="https://www.cloudflare.com/ja-jp/website-terms/">Cloudflare Turnstileの利用規約</a>もご参照ください。
-        <h2>プライバシーポリシー</h2>
-        これはCloudflare Turnstileによるボット判定を行っています。そのプライバシーポリシーについては以下をご参照ください。<br/>
-        <a href="https://www.cloudflare.com/ja-jp/privacypolicy/">Cloudflare&#x27;s Privacy Policy | Cloudflare</a>
+        <h1>プライバシーポリシー</h1>
         <br/>
         当サイトでは票の送信・登録時に以下の情報を収集します。
         <ul>
-            <li>あなたが入力した情報</li>
+            <li>入力・送信した情報</li>
             <li>グローバルIPアドレス</li>
+            <li>Cloudflare Turnstileを通してユーザーがボットであるかを判定するための情報</li>
             <li>Cloudflare Turnstileの認証情報</li>
         </ul>
     </div>
