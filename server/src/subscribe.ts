@@ -3,6 +3,7 @@ import { app } from './app';
 import Cloudflare from 'cloudflare';
 import { sha256 } from 'hono/utils/crypto';
 import { getConnInfo } from 'hono/cloudflare-workers';
+import { Turnstile } from './utils/turnstile';
 
 const encoder = new TextEncoder;
 app.post('/subscribe', c => {
@@ -29,15 +30,8 @@ app.post('/subscribe', c => {
       if(body.options.length > 32 || body.options.some(e=>encoder.encode(e).length > 256))
         throw new HTTPException(400, { message: "選択肢が長すぎます" });
       
-      const cinfo = getConnInfo(c);
-      const tsres = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify",{
-        body: JSON.stringify({
-          secret: c.env.TURNSTILE_SECRET_KEY,
-          response: body.token,
-          remoteip: cinfo.remote.address,
-        }),
-        headers: { "Content-Type": "application/json" },
-        method: "POST"}).then<{success: boolean, "error-codes": string[]}>(e=>e.json())
+      const ip = getConnInfo(c).remote.address ?? "unknown";
+      const tsres = await Turnstile(c, body.token, ip)
       if(!tsres.success){
         throw new HTTPException(400, { message: "Turnstileに失敗しました: " + tsres['error-codes'].join(",") });
       }else{
@@ -55,7 +49,7 @@ app.post('/subscribe', c => {
           params: [
             accesstoken, phash, body.title, body.description,
             JSON.stringify(body.options),
-            new Date().toISOString(), cinfo.remote.address??"unknown"
+            new Date().toISOString(), ip
           ]
         })
         

@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 
-type Env = {
+export type Env = {
     TURNSTILE_SECRET_KEY: string;
     ACCOUNT_ID: string;
     DB_ID: string;
