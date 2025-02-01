@@ -18,7 +18,7 @@ app.post("/vote", c => {
         throw new HTTPException(400, { message: "無効なJSON" })
     else{
       const ip = getConnInfo(c).remote.address ?? "unknown";
-      const tsres = await Turnstile(c, body.token, ip);
+      const tsres = await Turnstile(c, body.ts, ip);
       if(!tsres.success){
         throw new HTTPException(400, { message: "Turnstileに失敗しました: " + tsres["error-codes"].join(",") })
       }else{
