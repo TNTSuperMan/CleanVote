@@ -3,9 +3,24 @@
     background: #bbb;
     padding: 30px 10px;
     border-radius: 10px;
+    white-space: pre-wrap;
   }
   .option{
-    display: block;
+    display: inline-block;
     cursor: pointer;
+    transition: all 0.5s ease;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    background: skyblue;
+    &.active{
+      background: greenyellow;
+    }
+    &.active::before{
+      content: "○ ";
+    }
+    &::before{
+      content: "　 ";
+    }
   }
 }

@@ -14,15 +14,15 @@ export const Vote = () => {
   const [tstoken, setTsToken] = useState<string>();
   const [data, setData] = useState<BulletBoxData>();
   const [err, setErr] = useState("");
+  const [active, select] = useState(-1);
+  const [isSubmitting, setSubState] = useState(false);
 
   useEffect(()=>{
     setErr("");
     if(!tstoken) return;
     fetch(new URL("/data",import.meta.env.VITE_API_KEY), {
       method: "POST",
-      body: JSON.stringify({
-        ts: tstoken, token
-      })
+      body: token
     })
     .then(e=>new Promise<[number,string]>(res=>e.text().then(t=>res([e.status,t]))))
     .then(e=>{
@@ -45,13 +45,39 @@ export const Vote = () => {
     })
   },[token, tstoken])
 
+  const submit = () => {
+    setSubState(true)
+    fetch(new URL("/vote",import.meta.env.VITE_API_KEY),{
+      method: "POST",
+      body: JSON.stringify({
+        ts: tstoken,
+        token,
+        option: active
+      })
+    }).then(e=>new Promise<[number,string]>(res=>e.text().then(t=>res([e.status,t]))))
+    .then(e=>{
+      if(e[0] !== 200){
+        setErr(e[1])
+      }else{
+        alert("Submitted!")
+      }
+    })
+    .finally(()=>setSubState(false))
+  }
+
   return <div className="vote">
     <h1>投票{data ? `: ${data.title}` : null}</h1>
     {err ? <div className="error">{err}</div> : null}
-    {!data ? <UncoolTurnstile onVerify={setTsToken}/> : <>
      説明:
      <pre>{data?.description}</pre>
-     {data.options.map(e=><span className="option">{e}</span>)}
-    </>}
+     {data?.options.map((e,i)=>
+      <span className={"option"+(active==i?" active":"")}
+        onClick={()=>select(i)}>
+        {e}
+      </span>)}<br/>
+    <UncoolTurnstile onVerify={setTsToken}/>
+    <button className="button" onClick={isSubmitting?()=>{}:submit}>
+      {isSubmitting ? "送信中..." : "送信"}
+    </button>
   </div>
 }
