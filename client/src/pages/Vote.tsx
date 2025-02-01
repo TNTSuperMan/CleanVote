@@ -1,6 +1,6 @@
 import "./Vote.scss"
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { UncoolTurnstile } from "../components/Turnstile";
 
 type BulletBoxData = {
@@ -10,6 +10,7 @@ type BulletBoxData = {
 }
 
 export const Vote = () => {
+  const navigate = useNavigate();
   const { token } = useParams();
   const [tstoken, setTsToken] = useState<string>();
   const [data, setData] = useState<BulletBoxData>();
@@ -63,8 +64,8 @@ export const Vote = () => {
       if(e[0] !== 200){
         setErr(e[1])
       }else{
-        localStorage.setItem(token??"", "voted")
-        alert("Submitted!")
+        localStorage.setItem(token??"", "voted");
+        navigate("/voted")
       }
     })
     .finally(()=>setSubState(false))
