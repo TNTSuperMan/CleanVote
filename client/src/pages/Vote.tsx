@@ -71,7 +71,7 @@ export const Vote = () => {
      説明:
      <pre>{data?.description}</pre>
      {data?.options.map((e,i)=>
-      <span className={"option"+(active==i?" active":"")}
+      <span key={i} className={"option"+(active==i?" active":"")}
         onClick={()=>select(i)}>
         {e}
       </span>)}<br/>
