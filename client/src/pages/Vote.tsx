@@ -78,9 +78,9 @@ export const Vote = () => {
   return <div className="vote">
     <h1>投票{data ? `: ${data.title}` : null}</h1>
     {err ? <div className="error">{err}</div> : null}
-     説明:
-     <pre>{data?.description}</pre>
-     {data?.options.map((e,i)=>
+    {data ? <>説明:
+     <pre>{data.description}</pre>
+     {data.options.map((e,i)=>
       <span key={i} className={"option"+(active==i?" active":"")}
         onClick={()=>select(i)}>
         {e}
@@ -88,6 +88,6 @@ export const Vote = () => {
     <UncoolTurnstile onVerify={setTsToken}/>
     <button className="button" onClick={isSubmitting?()=>{}:submit}>
       {isSubmitting ? "送信中..." : "送信"}
-    </button>
+    </button></> : "読込中"}
   </div>
 }
