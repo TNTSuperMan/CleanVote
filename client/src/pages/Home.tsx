@@ -39,4 +39,8 @@ export const Home = () => <div className="home">
       ユーザーは快適な投票体験を得ることができます。
     </div>
   </div>
+  <footer>
+    <a href="https://github.com/TNTSuperMan/CleanVote">公式GitHub</a>
+    <Link to="/tos">利用規約・プライバシーポリシー</Link>
+  </footer>
 </div>

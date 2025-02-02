@@ -1,4 +1,4 @@
-export const About = () => {
+export const Tos = () => {
   return <div className="about">
       <h1>利用規約</h1>
       <h2>0.定義</h2>
