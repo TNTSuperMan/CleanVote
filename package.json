@@ -4,10 +4,10 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "deploy": "run-p --npm-path bun deploy:client deploy:server",
-        "deploy:client": "run-s --npm-path bun build-client && wrangler pages deploy client/dist",
+        "deploy": "run-p deploy:client deploy:server",
+        "deploy:client": "run-s build-client && wrangler pages deploy client/dist",
         "deploy:server": "wrangler deploy server/src/index.ts --minify",
-        "serve": "run-p --npm-path bun client server",
+        "serve": "run-p client server",
         "client": "cd client && vite --port 4000",
         "server": "wrangler dev server/src/index.ts",
         "build-client": "cd client && tsc -b && vite build",
