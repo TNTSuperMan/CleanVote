@@ -31,11 +31,12 @@ app.post("/admin", c => {
       if(!data) throw new HTTPException(400, { message: "その投票先は見つかりませんでした" })
       if(data.pass !== await ihash_promise) throw new HTTPException(400, { message: "パスワードが違います。" })
       else{
-        const votes = await d1(
+        const [votes, data] = await Promise.all([d1(
           'SELECT option, count FROM votes WHERE token = ?',
           [body.token]
-        )
-        return c.json(votes.results);
+        ), d1("SELECT title, description, options FROM ballot_boxes WHERE token = ?",
+          [body.token])])
+        return c.json({votes:votes.results,data:data.results});
       }
     }
   })
