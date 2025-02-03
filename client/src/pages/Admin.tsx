@@ -1,5 +1,5 @@
 import "./Admin.scss"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
 import { UncoolTurnstile } from "../components/Turnstile";
 
@@ -22,7 +22,12 @@ export const Admin = () => {
   const [pass, setPass] = useState("");
   const [err, setErr] = useState("");
   const [isSending, setSending] = useState(false);
-  const [ip_o_max, SetIPOMax] = useState(Infinity);
+  const [ip_o_max, SetIPOMax] = useState(100);
+  const [voteurl, setVoteURL] = useState<string>();
+
+  useEffect(()=>{
+    setVoteURL(`${location.protocol}//${location.host}/vote/${token}`);
+  },[token])
 
   const [vdata, setVData] = useState<{
     meta: { title: string, options: string[] },
@@ -75,6 +80,7 @@ export const Admin = () => {
       <button onClick={isSending?()=>{}:send}>{isSending?"送信中":"送信"}</button>
     </> : <>
       <h1>管理画面: {vdata.meta.title}</h1>
+      <p>投票URL: <a target="_blank" href={voteurl}>{voteurl}</a></p>
       <label>IPごとの一つの選択肢への最大票数:
         <input type="number" value={ip_o_max} onChange={e=>SetIPOMax(e.target.valueAsNumber)} />
         <input type="range" value={ip_o_max} onChange={e=>SetIPOMax(e.target.valueAsNumber)}/>
