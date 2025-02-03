@@ -109,7 +109,7 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
         </ul>
 
         <UncoolTurnstile onVerify={setToken}/>
-        <button onClick={isSending ? ()=>{} : send}>
+        <button className='button' onClick={isSending ? ()=>{} : send}>
             {isSending ? "送信中..." : "送信"}
         </button>
     </div>
