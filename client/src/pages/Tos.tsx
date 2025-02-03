@@ -3,10 +3,14 @@ export const Tos = () => {
     <h1>利用規約</h1>
     <h2>0.定義</h2>
     <table border={1}>
-      <tr><th>名称</th><th>内容</th></tr>
-      <tr><td>当サービス</td><td>CleanVoteのサービス</td></tr>
-      <tr><td>当サーバー</td><td>CleanVoteを運営するのに使われているサーバー</td></tr>
-      <tr><td>運営者</td><td>CleanVoteを運営している人</td></tr>
+      <thead>
+        <tr><th>名称</th><th>内容</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>当サービス</td><td>CleanVoteのサービス</td></tr>
+        <tr><td>当サーバー</td><td>CleanVoteを運営するのに使われているサーバー</td></tr>
+        <tr><td>運営者</td><td>CleanVoteを運営している人</td></tr>
+      </tbody>
     </table>
     <h2>1.適用</h2>
     本規約はユーザーと当サービスとの一切の関係に適用されるものとします。<br/>
