@@ -77,7 +77,7 @@ export const Admin = () => {
       {err ? <div className="error">{err}</div> : null}
       <label>パスワード:<input type="password" value={pass} onChange={e=>setPass(e.target.value)}/></label>
       <UncoolTurnstile onVerify={setTs}/>
-      <button onClick={isSending?()=>{}:send}>{isSending?"送信中":"送信"}</button>
+      <button className="button" onClick={isSending?()=>{}:send}>{isSending?"送信中":"送信"}</button>
     </> : <>
       <h1>管理画面: {vdata.meta.title}</h1>
       <p>投票URL: <a target="_blank" href={voteurl}>{voteurl}</a></p>
