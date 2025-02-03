@@ -1,6 +1,7 @@
 import { app } from "./app"
-import "./subscribe"
+import "./admin"
 import "./data"
+import "./subscribe"
 import "./vote"
 
 export default app
