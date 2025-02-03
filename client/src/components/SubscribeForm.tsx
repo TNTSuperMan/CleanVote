@@ -1,7 +1,6 @@
 import './SubscribeForm.scss';
 import { useEffect, useRef, useState } from "react";
 import { UncoolTurnstile } from "./Turnstile";
-import { Link } from 'react-router-dom';
 import { Limitter } from './Limitter';
 
 export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: string}) => void}) => {
@@ -67,7 +66,6 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
 
     return <div className="subscribe">
         <h1>登録フォーム</h1>
-        <Link className="button" to="/">戻る</Link><br/>
         {error ? <div className="err">{error}</div> : <></>}
 
         <table>
