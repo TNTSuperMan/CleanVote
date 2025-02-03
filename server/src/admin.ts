@@ -36,7 +36,7 @@ app.post("/admin", c => {
           [body.token]
         ), d1("SELECT title, description, options FROM ballot_boxes WHERE token = ?",
           [body.token])])
-        return c.json({votes:votes.results,data:data.results});
+        return c.json({votes:votes.results,data:data.results?.[0]});
       }
     }
   })
