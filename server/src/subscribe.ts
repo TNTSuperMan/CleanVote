@@ -30,6 +30,9 @@ app.post('/subscribe', c => {
       if(body.options.length > 32 || body.options.some(e=>encoder.encode(e).length > 256))
         throw new HTTPException(400, { message: "選択肢が長すぎます" });
       
+      const pval = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
+      const phashp = await sha256(pval);
+
       const ip = getConnInfo(c).remote.address ?? "unknown";
       const tsres = await Turnstile(c, body.token, ip)
       if(!tsres.success){
@@ -37,8 +40,7 @@ app.post('/subscribe', c => {
       }else{
         const d1 = d1Client(c);
         const accesstoken = crypto.randomUUID();
-        const pval = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
-        const phash = await sha256(pval);
+        const phash = await phashp
         if(!phash) throw new HTTPException(500, { message: "パスワードの生成に失敗しました" });
         await d1(
           'INSERT INTO [ballot_boxes] ("token", "createdat", "pass", "title", "description", "options", "ip") VALUES (?,?,?,?,?,?,?)',[
