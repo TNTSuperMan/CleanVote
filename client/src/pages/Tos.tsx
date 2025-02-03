@@ -43,7 +43,7 @@ export const Tos = () => {
         <li>Cloudflare Turnstileを通してユーザーがボットであるかを判定するための情報</li>
         <li>Cloudflare Turnstileの認証情報</li>
     </ul>
-    また、そのうち以下は当サーバーのデータベースに保存します。
+    また、そのうち以下は公開可能な形式で当サーバーのデータベースに保存します。
     <ul>
       <li>入力・送信した情報</li>
       <li>グローバルIPアドレス</li>
