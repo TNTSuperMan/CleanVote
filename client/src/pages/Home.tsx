@@ -7,7 +7,7 @@ export const Home = () => <div className="home">
     <img src={Icon} alt="" />
     <h1>CleanVote</h1>
   </div>
-  <p>荒らし対策を施したりした投票アプリです！</p>
+  <p>荒らし対策を施した投票アプリです！</p>
   <Link className="button" to="/subscribe">投票を始める</Link>
   <div className="widget" style={{margin:"20px 0 0 0"}}>
     <div style={{backgroundColor:"lightblue"}}>
