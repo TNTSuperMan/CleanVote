@@ -4,6 +4,7 @@
 .button{
     display: inline-block;
     background: #0dd;
+    margin: 5px;
     padding: 10px;
     border-radius: 20px;
     font-size: 17px;
@@ -11,6 +12,7 @@
     text-decoration: none;
     cursor: pointer;
     transition: all 0.3s ease;
+    border: none;
 }
 .button:hover{
     background: #0ff;

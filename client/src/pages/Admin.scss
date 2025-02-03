@@ -1,0 +1,19 @@
+.admin{
+  label{
+    display: block;
+  }
+  input[type=url]{
+    width: 100%;
+  }
+  input[type=number]{
+    width: 50px;
+  }
+  table{
+    td, th{
+      border: 1px black solid;
+    }
+    tfoot{
+      background: lightcoral;
+    }
+  }
+}

@@ -1,6 +1,7 @@
 .subscribe{
     textarea{
         width: calc(100% - 10px);
+        height: 200px;
         resize: vertical;
         padding: 5px;
         font-size:15px;
@@ -17,7 +18,8 @@
                 font-size: 15px;
             }
             button{
-                border-radius: 10px;
+                font-size: 15px;
+                border-radius: 15px;
                 padding: 3px 7px;
                 border: 1px #000 solid;
             }

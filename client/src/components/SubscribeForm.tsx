@@ -1,8 +1,8 @@
 import './SubscribeForm.scss';
 import { useEffect, useRef, useState } from "react";
-import { UncoolTurnstile } from "../components/Turnstile";
+import { UncoolTurnstile } from "./Turnstile";
 import { Link } from 'react-router-dom';
-import { Limitter } from '../components/Limitter';
+import { Limitter } from './Limitter';
 
 export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: string}) => void}) => {
     const [token, setToken] = useState<string|undefined>();
@@ -10,6 +10,7 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
     const [description, setDescription] = useState("");
     const [options, setOptions] = useState<string[]>([]);
 
+    const [isSending, setSending] = useState(false);
     const [error, setError] = useState("");
     const {current: encoder} = useRef(new TextEncoder);
 
@@ -33,7 +34,7 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
             if(options.some(e=>encoder.encode(e).length > 256)){
                 setError("選択肢が長すぎます")
             }else{
-                setError("");
+                setError(""); setSending(true);
                 fetch(new URL("/subscribe",import.meta.env.VITE_API_KEY), {
                     method: "post",
                     headers: {
@@ -59,7 +60,7 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
                             setError("レスポンスの読込に失敗しました。");
                         }
                     }
-                })
+                }).finally(()=>setSending(false));
             }
         }
     }
@@ -69,10 +70,19 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
         <Link className="button" to="/">戻る</Link><br/>
         {error ? <div className="err">{error}</div> : <></>}
 
-        タイトル<Limitter len={titlelen} max={256}/>：
-        <input type="text" value={title} onChange={e=>setTitle(e.target.value)} /><br/>
-
-        説明<Limitter len={desclen} max={688}/>
+        <table>
+            <tbody>
+                <tr>
+                    <td>タイトル</td>
+                    <td><Limitter len={titlelen} max={256}/></td>
+                    <td><input type="text" value={title} onChange={e=>setTitle(e.target.value)} /><br/></td>
+                </tr>
+                <tr>
+                    <td>説明</td>
+                    <td><Limitter len={desclen} max={688}/></td>
+                </tr>
+            </tbody>
+        </table>
         <textarea value={description} onChange={e=>setDescription(e.target.value)} placeholder="説明を入力" />
         
         選択肢
@@ -99,6 +109,8 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
         </ul>
 
         <UncoolTurnstile onVerify={setToken}/>
-        <button onClick={send}>送信</button>
+        <button className='button' onClick={isSending ? ()=>{} : send}>
+            {isSending ? "送信中..." : "送信"}
+        </button>
     </div>
 }

@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { SubscribeForm } from "./SubscribeForm";
+import { SubscribeForm } from "../components/SubscribeForm";
+import { Subscribed } from "../components/Subscribed";
 
 export const Subscribe = () => {
     const [bulletBoxData, setBB] = useState<void | {
@@ -7,6 +8,9 @@ export const Subscribe = () => {
         token: string
     }>();
     return <>{
-        bulletBoxData ? "" : <SubscribeForm onSubmit={setBB}/>
+        bulletBoxData ? <Subscribed
+            pass={bulletBoxData.pass}
+            token={bulletBoxData.token} /> :
+        <SubscribeForm onSubmit={setBB}/>
     }</>
 }
