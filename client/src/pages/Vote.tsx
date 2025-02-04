@@ -86,6 +86,7 @@ export const Vote = () => {
         {e}
       </span>)}<br/>
     <UncoolTurnstile onVerify={setTsToken}/>
+    送信した場合<a href="/tos">利用規約等</a>に同意したものとします。
     {data ? <button className="button" onClick={isSubmitting?()=>{}:submit}>
       {isSubmitting ? "送信中..." : "送信"}
     </button> : null}
