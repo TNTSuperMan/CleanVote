@@ -3,10 +3,14 @@ export const Tos = () => {
     <h1>利用規約</h1>
     <h2>0.定義</h2>
     <table border={1}>
-      <tr><th>名称</th><th>内容</th></tr>
-      <tr><td>当サービス</td><td>CleanVoteのサービス</td></tr>
-      <tr><td>当サーバー</td><td>CleanVoteを運営するのに使われているサーバー</td></tr>
-      <tr><td>運営者</td><td>CleanVoteを運営している人</td></tr>
+      <thead>
+        <tr><th>名称</th><th>内容</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>当サービス</td><td>CleanVoteのサービス</td></tr>
+        <tr><td>当サーバー</td><td>CleanVoteを運営するのに使われているサーバー</td></tr>
+        <tr><td>運営者</td><td>CleanVoteを運営している人</td></tr>
+      </tbody>
     </table>
     <h2>1.適用</h2>
     本規約はユーザーと当サービスとの一切の関係に適用されるものとします。<br/>
@@ -39,11 +43,10 @@ export const Tos = () => {
         <li>Cloudflare Turnstileを通してユーザーがボットであるかを判定するための情報</li>
         <li>Cloudflare Turnstileの認証情報</li>
     </ul>
-    また、そのうち以下は当サーバーのデータベースに保存します。
+    また、そのうち以下は公開可能な形式で当サーバーのデータベースに保存します。
     <ul>
       <li>入力・送信した情報</li>
       <li>グローバルIPアドレス</li>
     </ul>
-    法律に基づいた開示行為があった場合、グローバルIPアドレスを渡すため、ご了承ください。
   </div>
 }
