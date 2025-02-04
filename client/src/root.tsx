@@ -1,17 +1,16 @@
-import { lazy, StrictMode } from "react";
+import { StrictMode } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { HomeButton } from "./components/HomeButton";
 
-export const Root = () => {
-  const Home = lazy(()=>import("./pages/Home.tsx").then(e=>({"default":e.Home})));
-  const Subscribe = lazy(()=>import("./pages/Subscribe.tsx").then(e=>({"default":e.Subscribe})));
-  const Tos = lazy(()=>import("./pages/Tos.tsx").then(e=>({"default":e.Tos})));
-  const Vote = lazy(()=>import("./pages/Vote.tsx").then(e=>({"default":e.Vote})));
-  const Voted = lazy(()=>import("./pages/Voted.tsx").then(e=>({"default":e.Voted})));
-  const Admin = lazy(()=>import("./pages/Admin.tsx").then(e=>({"default":e.Admin})));
-  const NotFound = lazy(()=>import("./pages/404.tsx").then(e=>({"default":e.NotFound})));
-
-  return <StrictMode>
+export const Root = Promise.all([
+  import("./pages/Home.tsx"),
+  import("./pages/Subscribe.tsx"),
+  import("./pages/Tos.tsx"),
+  import("./pages/Vote.tsx"),
+  import("./pages/Voted.tsx"),
+  import("./pages/Admin.tsx"),
+  import("./pages/404.tsx")
+]).then(([{Home},{Subscribe},{Tos},{Vote},{Voted},{Admin},{NotFound}])=><StrictMode>
     <BrowserRouter>
       <HomeButton/>
       <Routes>
@@ -25,5 +24,4 @@ export const Root = () => {
         <Route path="*" element={<NotFound/>} />
       </Routes>
     </BrowserRouter>
-  </StrictMode>
-}
+  </StrictMode>)
