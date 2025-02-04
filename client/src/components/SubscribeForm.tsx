@@ -106,7 +106,7 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
             </li>
         </ul>
         <UncoolTurnstile onVerify={setToken}/>
-        登録した場合<a href="/tos">利用規約等</a>に同意したものとします。
+        登録した場合<a href="/tos" target="_blank">利用規約等</a>に同意したものとします。<br/>
         <button className='button' onClick={isSending ? ()=>{} : send}>
             {isSending ? "送信中..." : "送信"}
         </button>
