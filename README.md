@@ -2,16 +2,9 @@
 CleanなVoteのWebアプリを作ります。
 ## 環境
 パッケージマネージャはbunです。  
-フロントエンドはVite+TypeScript+React、バックエンド(REST API)はhonoで作っています。  
-バックエンドはCloudflare worker用に作っていますが以下のようにすればそれ以外でも動きます。
-```js
-import { serve } from "bun";
-import app from "./server";
-serve({
-    fetch: app.fetch,
-    port: 3928
-});
-```
+フロントエンドはVite+TypeScript+React+Router、バックエンド(REST API)はhonoで作っています。  
+ReactRouterを使っているのでフロントエンドの全てのパスがindex.htmlになるようにしてください。  
+バックエンドはCloudflare worker用に作っていますがhonoなので知らべれば大体どこでも動きます。
 ## インストール
 ```bash
 $ npm i
