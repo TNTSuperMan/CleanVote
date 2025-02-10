@@ -14,6 +14,6 @@ export const Turnstile = (c: Context<{Bindings: Env}>, token: string, ip?: strin
     })
   }).then<{success: boolean, "error-codes": string[]}>(e=>e.json())
   .then(ts=>{
-    if(!ts.success) return;
+    if(ts.success) return;
     else throw new HTTPException(400, { message: "Turnstileに失敗しました: " + ts["error-codes"].join(",") })
   })
