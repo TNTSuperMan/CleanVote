@@ -34,25 +34,21 @@ app.post('/subscribe', c => {
       const phashp = await sha256(pval);
 
       const ip = getConnInfo(c).remote.address ?? "unknown";
-      const tsres = await Turnstile(c, body.token, ip)
-      if(!tsres.success){
-        throw new HTTPException(400, { message: "Turnstileに失敗しました: " + tsres['error-codes'].join(",") });
-      }else{
-        const d1 = d1Client(c);
-        const accesstoken = crypto.randomUUID();
-        const phash = await phashp
-        if(!phash) throw new HTTPException(500, { message: "パスワードの生成に失敗しました" });
-        await d1(
-          'INSERT INTO [ballot_boxes] ("token", "createdat", "pass", "title", "description", "options", "ip") VALUES (?,?,?,?,?,?,?)',[
-            accesstoken, new Date().toISOString(), phash, body.title, body.description,
-            JSON.stringify(body.options), ip
-          ])
-        
-        return c.json({
-          pass: pval,
-          token: accesstoken
-        })
-      }
+      await Turnstile(c, body.token, ip)
+      const d1 = d1Client(c);
+      const accesstoken = crypto.randomUUID();
+      const phash = await phashp
+      if(!phash) throw new HTTPException(500, { message: "パスワードの生成に失敗しました" });
+      await d1(
+        'INSERT INTO [ballot_boxes] ("token", "createdat", "pass", "title", "description", "options", "ip") VALUES (?,?,?,?,?,?,?)',[
+          accesstoken, new Date().toISOString(), phash, body.title, body.description,
+          JSON.stringify(body.options), ip
+        ])
+      
+      return c.json({
+        pass: pval,
+        token: accesstoken
+      })
     }
   })}
 )
