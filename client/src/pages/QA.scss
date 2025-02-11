@@ -1,0 +1,8 @@
+dl{
+  dt::before{
+    content: "Q. "
+  }
+  dd::before{
+    content: "A. ";
+  }
+}

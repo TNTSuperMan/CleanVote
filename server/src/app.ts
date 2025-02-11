@@ -9,6 +9,7 @@ export type Env = {
     WRITE_TOKEN: string;
     EMAIL: string;
     ORIGIN: string; //CORS originの正規表現(テキスト方式の(new RegExp(xxx)))
+    BLOCKED_IP?: string; //,で分割されたIPリスト
 };
 export const app = new Hono<{ Bindings: Env }>()
 

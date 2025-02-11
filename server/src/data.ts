@@ -1,9 +1,10 @@
 import { HTTPException } from "hono/http-exception";
 import { app } from "./app";
 import { d1Client } from "./utils/d1";
+import { CheckAndIP } from "./utils/check";
 
 app.post("/data",c=>{
-  if(c.req.raw.cf?.country !== "JP") throw new HTTPException(400, { message: "日本国外IPからアクセスできません。" })
+  CheckAndIP(c);
   return c.req.text().then(async token=>{
     const d1 = d1Client(c);
     const rawdata = (await d1("SELECT title, description, options FROM ballot_boxes WHERE token = ?",
