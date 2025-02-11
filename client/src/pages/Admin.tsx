@@ -1,6 +1,6 @@
 import "./Admin.scss"
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { UncoolTurnstile } from "../components/Turnstile";
 
 export const Admin = () => {
@@ -133,6 +133,7 @@ export const Admin = () => {
           </tr>
         </tfoot>
       </table>
+      <Link to={`/destroy/${token}`} className="button">削除</Link>
     </>}
   </div>
 }

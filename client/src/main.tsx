@@ -10,6 +10,7 @@ import { Vote } from "./pages/Vote";
 import { Voted } from "./pages/Voted";
 import { Admin } from "./pages/Admin";
 import { NotFound } from "./pages/404";
+import { Destroy } from './pages/Destroy';
 
 createRoot(document.getElementById('root')!).render(<StrictMode>
     <BrowserRouter>
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')!).render(<StrictMode>
         <Route path="/vote/:token" element={<Vote/>} />
         <Route path="/voted" element={<Voted/>} />
         <Route path="/admin/:token" element={<Admin/>} />
+        <Route path="/destroy/:token" element={<Destroy/>} />
   
         <Route path="*" element={<NotFound/>} />
       </Routes>
