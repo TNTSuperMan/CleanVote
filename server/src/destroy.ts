@@ -24,7 +24,7 @@ app.post("/destroy",c=>{
     if(!data) throw new HTTPException(400, { message: "その投票先は存在しません。" })
     const vdelres = await d1("DELETE FROM ballot_boxes WHERE token = ? AND pass = ?", [body.token, await ihash_promise ?? ""]);
     console.log(vdelres);
-    if(!vdelres.results?.length)
+    if(!vdelres.meta?.changes)
       throw new HTTPException(400, { message: "パスワードが違います。" })
     await d1("DELETE FROM votes WHERE token = ?", [body.token]);
     return c.text("");
