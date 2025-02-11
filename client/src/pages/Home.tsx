@@ -42,5 +42,6 @@ export const Home = () => <div className="home">
   <footer>
     <a href="https://github.com/TNTSuperMan/CleanVote">公式GitHub</a>
     <Link to="/tos">利用規約・プライバシーポリシー</Link>
+    <Link to="/qa">Q&A</Link>
   </footer>
 </div>
