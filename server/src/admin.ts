@@ -2,12 +2,12 @@ import { HTTPException } from "hono/http-exception";
 import { app } from "./app";
 import { d1Client } from "./utils/d1";
 import { Turnstile } from "./utils/turnstile";
-import { getConnInfo } from "hono/cloudflare-workers";
 import { sha256 } from "hono/utils/crypto";
+import { CheckAndIP } from "./utils/check";
 
 app.post("/admin", c => {
-  if(c.req.raw.cf?.country !== "JP") throw new HTTPException(400, { message: "日本国外IPからアクセスできません。" })
-    return c.req.json<{ts: string, token: string, pass: string}>()
+  CheckAndIP(c);
+  return c.req.json<{ts: string, token: string, pass: string}>()
   .catch(()=>{ throw new HTTPException(400, { message: "無効なJSON" }) })
   .then(async body=>{
     if(

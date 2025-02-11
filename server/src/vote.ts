@@ -1,11 +1,11 @@
 import { HTTPException } from "hono/http-exception";
 import { app } from "./app";
-import { getConnInfo } from "hono/cloudflare-workers";
 import { d1Client } from "./utils/d1";
 import { Turnstile } from "./utils/turnstile";
+import { CheckAndIP } from "./utils/check";
 
 app.post("/vote", c => {
-  if(c.req.raw.cf?.country !== "JP") throw new HTTPException(400, { message: "日本国外IPから投票できません" })
+  const ip = CheckAndIP(c);
   return c.req.json<{ts: string, token: string, option: number}>()
   .catch(()=>{
     throw new HTTPException(400, { message: "無効なJSON" })
@@ -17,7 +17,6 @@ app.post("/vote", c => {
       typeof body.option !== "number")
         throw new HTTPException(400, { message: "無効なJSON" })
     else{
-      const ip = getConnInfo(c).remote.address ?? "unknown";
       await Turnstile(c, body.ts, ip);
       const d1 = d1Client(c);
 

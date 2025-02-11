@@ -1,13 +1,13 @@
 import { HTTPException } from 'hono/http-exception'
 import { app } from './app';
 import { sha256 } from 'hono/utils/crypto';
-import { getConnInfo } from 'hono/cloudflare-workers';
 import { Turnstile } from './utils/turnstile';
 import { d1Client } from './utils/d1';
+import { CheckAndIP } from './utils/check';
 
 const encoder = new TextEncoder;
 app.post('/subscribe', c => {
-  if(c.req.raw.cf?.country !== "JP") throw new HTTPException(400, { message: "日本国外IPから操作できません" })
+  const ip = CheckAndIP(c);
   return c.req.json<{token: string, title: string, description: string, options: string[]}>()
   .catch(()=>{
     throw new HTTPException(400, { message: "無効なJSON" });
@@ -33,7 +33,6 @@ app.post('/subscribe', c => {
       const pval = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
       const phashp = await sha256(pval);
 
-      const ip = getConnInfo(c).remote.address ?? "unknown";
       await Turnstile(c, body.token, ip)
       const d1 = d1Client(c);
       const accesstoken = crypto.randomUUID();
