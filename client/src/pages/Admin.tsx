@@ -35,6 +35,8 @@ export const Admin = () => {
     raw: { option: number, count: number }[]
   }>();
 
+  const round = (e: number) => e.toString().substring(0, 8);
+
   const send = () => {
     setErr("");
     if(!ts) setErr("Turnstileの認証をしてください");
@@ -121,13 +123,13 @@ export const Admin = () => {
 
             <td>{vdata.raw.reduce((v,e)=>v+e.count,0)}</td>
             <td>{!vdata.raw.length ? 0 :
-              vdata.raw.reduce((v,e)=>v+e.count,0)/vdata.raw.length}</td>
-            <td>{median(vdata.raw.map(e=>e.count))}</td>
+              round(vdata.raw.reduce((v,e)=>v+e.count,0)/vdata.raw.length)}</td>
+            <td>{round(median(vdata.raw.map(e=>e.count)))}</td>
 
             <td>{vdata.raw.reduce((v,e)=>v+Math.min(ip_o_max,e.count),0)}</td>
             <td>{!vdata.raw.length ? 0 :
-              vdata.raw.reduce((v,e)=>v+Math.min(ip_o_max,e.count),0)/vdata.raw.length}</td>
-            <td>{median(vdata.raw.map(e=>Math.min(ip_o_max,e.count)))}</td>
+              round(vdata.raw.reduce((v,e)=>v+Math.min(ip_o_max,e.count),0)/vdata.raw.length)}</td>
+            <td>{round(median(vdata.raw.map(e=>Math.min(ip_o_max,e.count))))}</td>
           </tr>
         </tfoot>
       </table>
