@@ -12,10 +12,10 @@ export type Env = {
     BLOCKED_IP?: string; //,で分割されたIPリスト
 };
 export const app = new Hono<{ Bindings: Env }>()
-
+let reg: RegExp|void;
 app.use("*", cors({
   origin: (origin, c) =>
-    new RegExp(c.env.ORIGIN).test(origin) ? origin : null,
+    (reg ?? (reg = new RegExp(c.env.ORIGIN))).test(origin) ? origin : null,
   allowHeaders: ["X-Custom-Header", "Upgrade-Insecure-Requests", "Content-type"],
   exposeHeaders: ['Content-Length', 'X-Kuma-Revision'],
   allowMethods: ["POST", "OPTIONS"],
