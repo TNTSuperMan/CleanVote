@@ -76,7 +76,7 @@ export const Vote = () => {
   }
 
   return <div className="vote">
-    <h1>投票{data ? `: ${data.title}` : "(読込中)"}</h1>
+    <h1>投票{data ? `: ${data.title}` : tstoken ? "(読込中)" : "(ボット判定を待機中)"}</h1>
     {err ? <div className="error">{err}</div> : null}
     {data ? <>説明:
      <pre>{data?.description}</pre></>:null}
