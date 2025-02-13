@@ -78,7 +78,7 @@ export const Vote = () => {
   return <div className="vote">
     <h1>投票{data ? `: ${data.title}` : tstoken ? "(読込中)" : "(ボット判定を待機中)"}</h1>
     {err ? <div className="error">{err}</div> : null}
-    {data ? <>説明:
+    {data ? <>
      <pre>{data?.description}</pre></>:null}
      {data?.options.map((e,i)=>
       <span key={i} className={"option"+(active==i?" active":"")}
