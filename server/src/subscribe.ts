@@ -8,13 +8,12 @@ import { CheckAndIP } from './utils/check';
 const encoder = new TextEncoder;
 app.post('/subscribe', c => {
   const ip = CheckAndIP(c);
-  return c.req.json<{token: string, title: string, description: string, options: string[]}>()
+  return c.req.json<{title: string, description: string, options: string[]}>()
   .catch(()=>{
     throw new HTTPException(400, { message: "無効なJSON" });
   }).then(async body=>{
     if(
       typeof body !== "object" ||
-      typeof body.token !== "string" ||
       typeof body.title !== "string" ||
       typeof body.description !== "string" ||
       !Array.isArray(body.options) ||
@@ -33,7 +32,6 @@ app.post('/subscribe', c => {
       const pval = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
       const phashp = await sha256(pval);
 
-      await Turnstile(c, body.token, ip)
       const d1 = d1Client(c);
       const accesstoken = crypto.randomUUID();
       const phash = await phashp
