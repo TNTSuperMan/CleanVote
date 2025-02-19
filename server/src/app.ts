@@ -26,6 +26,6 @@ app.use("*", cors({
   credentials: true,
 }))
 app.use("*", async(c, n) => {
-  if(c.req.path !== "/data") await Turnstile(c, c.req.header(tsheadid) ?? "");
+  await Turnstile(c, c.req.header(tsheadid) ?? "");
   return await n();
 })
