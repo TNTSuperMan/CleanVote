@@ -2,6 +2,7 @@ import "./Admin.scss"
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom"
 import { UncoolTurnstile } from "../components/Turnstile";
+import { tsheadid } from "../auth";
 
 export const Admin = () => {
  const median = (array: number[]) => {
@@ -39,11 +40,17 @@ export const Admin = () => {
 
   const send = () => {
     setErr("");
-    if(!ts) setErr("Turnstileの認証をしてください");
+    if(!ts){
+      setErr("Turnstileの認証をしてください");
+      return;
+    }
     setSending(true);
     fetch(new URL("/admin", import.meta.env.VITE_API_KEY),{
       method: "POST",
-      body: JSON.stringify({token, ts, pass})
+      body: JSON.stringify({token, ts, pass}),
+      headers: {
+        [tsheadid]: ts
+      }
     }).then(e=>new Promise<[number,string]>(res=>e.text().then(t=>res([e.status,t]))))
     .then(e=>{
       if(e[0] !== 200){

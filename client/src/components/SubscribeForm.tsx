@@ -2,6 +2,7 @@ import './SubscribeForm.scss';
 import { useEffect, useRef, useState } from "react";
 import { UncoolTurnstile } from "./Turnstile";
 import { Limitter } from './Limitter';
+import { tsheadid } from '../auth';
 
 export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: string}) => void}) => {
     const [token, setToken] = useState<string|undefined>();
@@ -38,9 +39,9 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
                     method: "post",
                     headers: {
                         "Content-Type": "application/json",
+                        [tsheadid]: token
                     },
-                    body: JSON.stringify({title, description, token, options}),
-                    cache: "no-cache"
+                    body: JSON.stringify({title, description, options})
                 }).then(e=>new Promise<[number, string]>(res=>e.text().then(t=>res([e.status, t]))))
                 .then(e=>{
                     if(e[0] == 400){

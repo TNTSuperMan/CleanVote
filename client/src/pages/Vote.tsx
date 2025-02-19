@@ -2,6 +2,7 @@ import "./Vote.scss"
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { UncoolTurnstile } from "../components/Turnstile";
+import { tsheadid } from "../auth";
 
 type BulletBoxData = {
   title: string,
@@ -20,10 +21,16 @@ export const Vote = () => {
 
   useEffect(()=>{
     setErr("");
-    if(!tstoken) return;
+    if(!tstoken){
+      setErr("Turnstileに失敗しました");
+      return;
+    }
     fetch(new URL("/data",import.meta.env.VITE_API_KEY), {
       method: "POST",
-      body: token
+      body: token,
+      headers: {
+        [tsheadid]: tstoken
+      }
     })
     .then(e=>new Promise<[number,string]>(res=>e.text().then(t=>res([e.status,t]))))
     .then(e=>{
