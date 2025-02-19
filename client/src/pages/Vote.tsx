@@ -22,7 +22,7 @@ export const Vote = () => {
   useEffect(()=>{
     setErr("");
     if(!tstoken){
-      setErr("Turnstileに失敗しました");
+      setErr("Turnstileの認証をしてください");
       return;
     }
     fetch(new URL("/data",import.meta.env.VITE_API_KEY), {

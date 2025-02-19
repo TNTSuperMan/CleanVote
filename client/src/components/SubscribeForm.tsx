@@ -25,7 +25,7 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
 
     const send = () => {
         if(!token){
-            setError("Turnstileに失敗しました。");
+            setError("Turnstileの認証をしてください");
         }else if(titlelen > 256){
             setError("タイトルが長すぎます。");
         }else if(desclen > 688){

@@ -14,7 +14,7 @@ export const Destroy = () => {
 
   const send = () => {
     if(!ts){
-      setErr("Turnstileに失敗しました。");
+      setErr("Turnstileの認証をしてください");
       return;
     }
     setErr("");
