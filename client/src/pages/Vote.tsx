@@ -70,7 +70,7 @@ export const Vote = () => {
         option: active
       }),
       headers: {
-        [tsheadid]: tstoken
+        [tsheadid]: tstoken??""
       }
     }).then(e=>new Promise<[number,string]>(res=>e.text().then(t=>res([e.status,t]))))
     .then(e=>{
