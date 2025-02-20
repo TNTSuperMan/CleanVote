@@ -66,10 +66,12 @@ export const Vote = () => {
     fetch(new URL("/vote",import.meta.env.VITE_API_KEY),{
       method: "POST",
       body: JSON.stringify({
-        ts: tstoken,
         token,
         option: active
-      })
+      }),
+      headers: {
+        [tsheadid]: tstoken
+      }
     }).then(e=>new Promise<[number,string]>(res=>e.text().then(t=>res([e.status,t]))))
     .then(e=>{
       if(e[0] !== 200){
