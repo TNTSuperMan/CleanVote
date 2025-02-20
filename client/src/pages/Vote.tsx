@@ -20,6 +20,7 @@ export const Vote = () => {
   const [isSubmitting, setSubState] = useState(false);
 
   useEffect(()=>{
+    if(data) return;
     setErr("");
     if(!tstoken){
       setErr("Turnstileの認証をしてください");
@@ -51,7 +52,7 @@ export const Vote = () => {
         }
       }
     })
-  },[token, tstoken])
+  },[token, tstoken, data])
 
   const submit = () => {
     if(active == -1){
