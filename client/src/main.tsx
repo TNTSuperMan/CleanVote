@@ -28,7 +28,6 @@ createRoot(document.getElementById('root')!).render(<StrictMode>
   
         <Route path="*" element={<NotFound/>} />
       </Routes>
-      <div style={{background:"red",padding:"10px",borderRadius:"10px"}}>注意：現在API形式を変更しているため正常に動作しない可能性があります。</div>
     </BrowserRouter>
   </StrictMode>
   )
