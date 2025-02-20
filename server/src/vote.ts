@@ -6,18 +6,16 @@ import { CheckAndIP } from "./utils/check";
 
 app.post("/vote", c => {
   const ip = CheckAndIP(c);
-  return c.req.json<{ts: string, token: string, option: number}>()
+  return c.req.json<{token: string, option: number}>()
   .catch(()=>{
     throw new HTTPException(400, { message: "無効なJSON" })
   }).then(async body=>{
     if(
       typeof body !== "object" ||
       typeof body.token !== "string" ||
-      typeof body.ts !== "string" ||
       typeof body.option !== "number")
         throw new HTTPException(400, { message: "無効なJSON" })
     else{
-      await Turnstile(c, body.ts, ip);
       const d1 = d1Client(c);
 
       const vfres = await d1("SELECT token FROM ballot_boxes WHERE token = ?",

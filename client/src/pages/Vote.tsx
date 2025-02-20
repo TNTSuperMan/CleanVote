@@ -2,6 +2,7 @@ import "./Vote.scss"
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { UncoolTurnstile } from "../components/Turnstile";
+import { tsheadid } from "../auth";
 
 type BulletBoxData = {
   title: string,
@@ -19,11 +20,18 @@ export const Vote = () => {
   const [isSubmitting, setSubState] = useState(false);
 
   useEffect(()=>{
+    if(data) return;
     setErr("");
-    if(!tstoken) return;
+    if(!tstoken){
+      setErr("Turnstileの認証をしてください");
+      return;
+    }
     fetch(new URL("/data",import.meta.env.VITE_API_KEY), {
       method: "POST",
-      body: token
+      body: token,
+      headers: {
+        [tsheadid]: tstoken
+      }
     })
     .then(e=>new Promise<[number,string]>(res=>e.text().then(t=>res([e.status,t]))))
     .then(e=>{
@@ -44,7 +52,7 @@ export const Vote = () => {
         }
       }
     })
-  },[token, tstoken])
+  },[token, tstoken, data])
 
   const submit = () => {
     if(active == -1){
@@ -59,10 +67,12 @@ export const Vote = () => {
     fetch(new URL("/vote",import.meta.env.VITE_API_KEY),{
       method: "POST",
       body: JSON.stringify({
-        ts: tstoken,
         token,
         option: active
-      })
+      }),
+      headers: {
+        [tsheadid]: tstoken??""
+      }
     }).then(e=>new Promise<[number,string]>(res=>e.text().then(t=>res([e.status,t]))))
     .then(e=>{
       if(e[0] !== 200){
@@ -76,16 +86,16 @@ export const Vote = () => {
   }
 
   return <div className="vote">
-    <h1>投票{data ? `: ${data.title}` : "(読込中)"}</h1>
+    <h1>投票{data ? `: ${data.title}` : tstoken ? "(読込中)" : "(ボット判定を待機中)"}</h1>
     {err ? <div className="error">{err}</div> : null}
-    {data ? <>説明:
+    {data ? <>
      <pre>{data?.description}</pre></>:null}
      {data?.options.map((e,i)=>
       <span key={i} className={"option"+(active==i?" active":"")}
         onClick={()=>select(i)}>
         {e}
       </span>)}<br/>
-    <UncoolTurnstile onVerify={setTsToken}/>
+    <UncoolTurnstile key={+!data} onVerify={setTsToken}/>
     送信した場合<a href="/tos" target="_blank">利用規約等</a>に同意したものとします。<br/>
     {data ? <button className="button" onClick={isSubmitting?()=>{}:submit}>
       {isSubmitting ? "送信中..." : "送信"}

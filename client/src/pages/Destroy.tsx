@@ -2,6 +2,7 @@ import "./Destroy.scss"
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { UncoolTurnstile } from "../components/Turnstile";
+import { tsheadid } from "../auth";
 
 export const Destroy = () => {
   const { token } = useParams();
@@ -12,11 +13,18 @@ export const Destroy = () => {
   const [isSending, changeSend] = useState(false);
 
   const send = () => {
+    if(!ts){
+      setErr("Turnstileの認証をしてください");
+      return;
+    }
     setErr("");
     changeSend(true);
     fetch(new URL("/destroy", import.meta.env.VITE_API_KEY), {
       method: "POST",
-      body: JSON.stringify({ts, token, pass})
+      headers: {
+        [tsheadid]: ts
+      },
+      body: JSON.stringify({token, pass})
     }).then<string | void>(e=>e.status === 200 ? undefined : e.text())
     .then(e=>{
       if(e !== undefined){
