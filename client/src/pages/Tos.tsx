@@ -39,9 +39,37 @@ export const Tos = () => {
     <ul>
         <li>入力・送信した情報</li>
         <li>グローバルIPアドレス</li>
-        <li>Cloudflare Turnstileを通してユーザーがボットであるかを判定するための情報</li>
-        <li>Cloudflare Turnstileの認証情報</li>
+        <li><a target="_blank" href="https://www.cloudflare.com/ja-jp/application-services/products/turnstile/">Cloudflare Turnstile</a>を通してユーザーがボットであるかを判定するための情報</li>
     </ul>
-    また、そのうち、入力・送信した情報は公開可能な形式で当サーバーのデータベースに保存します。
+    そのうち以下の情報は当サーバーのデータベースに保存します。
+    <ul>
+        <li>入力・送信した情報</li>
+        <li>グローバルIPアドレス</li>
+    </ul>
+    使用方法については、以下になります。
+    <table border={1}>
+      <thead>
+        <tr><th>情報</th><th>目的</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>登録フォームに入力した情報</td>
+          <td>URLを通じて投票者にタイトル・説明・選択肢を表示・投票させるため</td>
+        </tr>
+        <tr>
+          <td>投票フォームに入力した情報</td>
+          <td>投票を開始した人に、何が投票されているかを見せるため。<br/>
+            IPアドレス・選択肢ごとにグルーピングされて保存されて<br/>
+            表示されますが、IPアドレスが伝わることはありません。</td>
+        </tr>
+        <tr>
+          <td>グローバルIPアドレス</td>
+          <td>個人の大量投票の対策のため
+            (<a target="_blank" href="https://github.com/TNTSuperMan/CleanVote/wiki/%E8%8D%92%E3%82%89%E3%81%97%E5%AF%BE%E7%AD%96%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6">詳細</a>)と、<br/>
+            IPBAN・法的処置のため
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 }
