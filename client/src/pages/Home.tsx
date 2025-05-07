@@ -4,7 +4,7 @@ import './Home.scss'
 
 export const Home = () => <div className="home">
   <div className="title">
-    <img src={Icon} alt="" />
+    <img src={Icon} alt="" width="100" height="100" />
     <h1>CleanVote</h1>
   </div>
   <p>荒らし対策を施した投票アプリです！</p>
