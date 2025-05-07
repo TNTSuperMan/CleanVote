@@ -33,6 +33,13 @@
             justify-content: center;
             line-height: 1.5;
             letter-spacing: 1px;
+            background: lightblue;
+            h2{
+              font-size: 30px;
+            }
+        }
+        div + div{
+          background: lightgreen;
         }
     }
   footer a{
