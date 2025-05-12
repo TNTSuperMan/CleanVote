@@ -7,11 +7,7 @@ const tsheadid = "Turnstile-Token"
 
 export type Env = {
     TURNSTILE_SECRET_KEY: string;
-    ACCOUNT_ID: string;
-    DB_ID: string;
-    ACCESS_TOKEN: string;
-    WRITE_TOKEN: string;
-    EMAIL: string;
+    DB: D1Database;
     ORIGIN: string; //CORS originの正規表現(テキスト方式の(new RegExp(xxx)))
     BLOCKED_IP?: string; //,で分割されたIPリスト
 };
