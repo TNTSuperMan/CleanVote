@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { UncoolTurnstile } from "../components/Turnstile";
 import { tsheadid } from "../auth";
+import { turnstileErrorMSG } from "../utils/turnstile";
 
 export const Destroy = () => {
   const { token } = useParams();
@@ -25,11 +26,13 @@ export const Destroy = () => {
         [tsheadid]: ts
       },
       body: JSON.stringify({token, pass})
-    }).then<string | void>(e=>e.status === 200 ? undefined : e.text())
+    }).then(e=>new Promise<[number, string]>(res=>e.text().then(t=>res([e.status, t]))))
     .then(e=>{
-      if(e !== undefined){
-        setErr(e);
-      }else{
+      if(e[0] == 401)
+        setErr(turnstileErrorMSG(e[1]));
+      else if(e[0] != 200)
+        setErr(`エラー: ${e[1]}`);
+      else{
         alert("成功しました。ホームにリダイレクトします。");
         navigate("/");
       }

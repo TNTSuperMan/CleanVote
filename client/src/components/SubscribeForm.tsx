@@ -3,6 +3,7 @@ import { useState } from "react";
 import { UncoolTurnstile } from "./Turnstile";
 import { Limitter } from './Limitter';
 import { tsheadid } from '../auth';
+import { turnstileErrorMSG } from '../utils/turnstile';
 
 export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: string}) => void}) => {
   const [token, setToken] = useState<string|undefined>();
@@ -34,11 +35,13 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
           body: JSON.stringify({title, description, options})
         }).then(e=>new Promise<[number, string]>(res=>e.text().then(t=>res([e.status, t]))))
         .then(e=>{
-          if(e[0] == 400){
-            setError(e[1]);
-          }else if(e[0] == 500){
-            setError("サーバーエラー: " + e[1])
-          }else{
+          if(e[0] == 400)
+            setError(`${e[0]}エラー: ${e[1]}`);
+          else if(e[0] == 401)
+            setError(turnstileErrorMSG(e[1]));
+          else if(e[0] == 500)
+            setError(`サーバーエラー: ${e[1]}`)
+          else{
             try{
               const json = JSON.parse(e[1]);
               if(typeof json != "object" ||
