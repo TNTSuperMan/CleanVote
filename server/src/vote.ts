@@ -2,7 +2,7 @@ import { HTTPException } from "hono/http-exception";
 import { app } from "./app";
 import { d1Client } from "./utils/d1";
 import { CheckAndIP } from "./utils/check";
-import { z } from "zod";
+import * as z from "@zod/mini";
 import { parseReq } from "./utils/parseReq";
 
 const voteReqBody = z.object({

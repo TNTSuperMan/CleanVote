@@ -3,13 +3,13 @@ import { app } from './app';
 import { sha256 } from 'hono/utils/crypto';
 import { d1Client } from './utils/d1';
 import { CheckAndIP } from './utils/check';
-import { z } from 'zod';
+import * as z from "@zod/mini";
 import { parseReq } from './utils/parseReq';
 
 const subscribeReqBody = z.object({
-  title: z.string().length(256),
-  description: z.string().length(688),
-  options: z.array(z.string().length(256)).length(32)
+  title: z.string(),
+  description: z.string(),
+  options: z.array(z.string())
 })
 
 const encoder = new TextEncoder;
