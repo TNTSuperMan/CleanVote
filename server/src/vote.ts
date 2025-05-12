@@ -1,7 +1,6 @@
 import { HTTPException } from "hono/http-exception";
 import { app } from "./app";
 import { d1Client } from "./utils/d1";
-import { Turnstile } from "./utils/turnstile";
 import { CheckAndIP } from "./utils/check";
 
 app.post("/vote", c => {

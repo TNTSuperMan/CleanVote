@@ -1,7 +1,6 @@
 import { HTTPException } from 'hono/http-exception'
 import { app } from './app';
 import { sha256 } from 'hono/utils/crypto';
-import { Turnstile } from './utils/turnstile';
 import { d1Client } from './utils/d1';
 import { CheckAndIP } from './utils/check';
 

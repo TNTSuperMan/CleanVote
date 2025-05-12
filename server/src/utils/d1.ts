@@ -1,6 +1,5 @@
 import { Context } from "hono";
 import { Env } from "../app";
-import Cloudflare from "cloudflare";
 import { HTTPException } from "hono/http-exception";
 
 export const d1Client = (c: Context<{Bindings: Env}>) => {

@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { Turnstile } from "./utils/turnstile";
-import { getConnInfo } from "hono/cloudflare-workers";
 
 const tsheadid = "Turnstile-Token"
 
