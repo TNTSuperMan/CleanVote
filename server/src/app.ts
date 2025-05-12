@@ -5,10 +5,10 @@ import { Turnstile } from "./utils/turnstile";
 const tsheadid = "Turnstile-Token"
 
 export type Env = {
-    TURNSTILE_SECRET_KEY: string;
-    DB: D1Database;
-    ORIGIN: string; //CORS originの正規表現(テキスト方式の(new RegExp(xxx)))
-    BLOCKED_IP?: string; //,で分割されたIPリスト
+  TURNSTILE_SECRET_KEY: string;
+  DB: D1Database;
+  ORIGIN: string; //CORS originの正規表現(テキスト方式の(new RegExp(xxx)))
+  BLOCKED_IP?: string; //,で分割されたIPリスト
 };
 export const app = new Hono<{ Bindings: Env }>()
 let reg: RegExp|void;
