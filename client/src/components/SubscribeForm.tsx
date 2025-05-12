@@ -1,5 +1,5 @@
 import './SubscribeForm.scss';
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { UncoolTurnstile } from "./Turnstile";
 import { Limitter } from './Limitter';
 import { tsheadid } from '../auth';
@@ -12,26 +12,16 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
 
     const [isSending, setSending] = useState(false);
     const [error, setError] = useState("");
-    const {current: encoder} = useRef(new TextEncoder);
-
-    const [titlelen, setTitlelen] = useState(0);
-    useEffect(()=>{
-        setTitlelen(encoder.encode(title).length);
-    },[title, encoder])
-    const [desclen, setDesclen] = useState(0);
-    useEffect(()=>{
-        setDesclen(encoder.encode(description).length);
-    },[description, encoder])
 
     const send = () => {
         if(!token){
             setError("Turnstileの認証をしてください");
-        }else if(titlelen > 256){
+        }else if(title.length > 256){
             setError("タイトルが長すぎます。");
-        }else if(desclen > 688){
+        }else if(description.length > 688){
             setError("説明が長すぎます。");
         }else{
-            if(options.some(e=>encoder.encode(e).length > 256)){
+            if(options.some(e=>e.length > 256)){
                 setError("選択肢が長すぎます")
             }else{
                 setError(""); setSending(true);
@@ -73,12 +63,12 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
             <tbody>
                 <tr>
                     <td>タイトル</td>
-                    <td><Limitter len={titlelen} max={256}/></td>
+                    <td><Limitter len={title.length} max={256}/></td>
                     <td><input type="text" value={title} onChange={e=>setTitle(e.target.value)} /><br/></td>
                 </tr>
                 <tr>
                     <td>説明</td>
-                    <td><Limitter len={desclen} max={688}/></td>
+                    <td><Limitter len={description.length} max={688}/></td>
                 </tr>
             </tbody>
         </table>
@@ -88,7 +78,7 @@ export const SubscribeForm = ({onSubmit}: {onSubmit: (e: {pass: string, token: s
         <ul>
             {options.map((e,i)=><li key={i}>
                 <button onClick={()=>setOptions(options.toSpliced(i, 1))}>X</button>
-                <Limitter len={encoder.encode(e).length} max={256}/>
+                <Limitter len={e.length} max={256}/>
                 <input type="text" value={e} onChange={e=>{
                     const optionsCopy = options.map(e=>e);
                     optionsCopy[i] = e.target.value;
