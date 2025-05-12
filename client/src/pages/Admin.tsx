@@ -1,5 +1,5 @@
 import "./Admin.scss"
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom"
 import { UncoolTurnstile } from "../components/Turnstile";
 import { tsheadid } from "../auth";
@@ -24,11 +24,7 @@ export const Admin = () => {
   const [err, setErr] = useState("");
   const [isSending, setSending] = useState(false);
   const [ip_o_max, SetIPOMax] = useState(100);
-  const [voteurl, setVoteURL] = useState<string>();
-
-  useEffect(()=>{
-    setVoteURL(`${location.protocol}//${location.host}/vote/${token}`);
-  },[token])
+  const voteurl = useMemo(()=>`${location.protocol}//${location.host}/vote/${token}`, [token]);
 
   const [vdata, setVData] = useState<{
     meta: { title: string, options: string[] },
