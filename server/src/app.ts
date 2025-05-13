@@ -1,19 +1,14 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { Turnstile } from "./utils/turnstile";
-import { getConnInfo } from "hono/cloudflare-workers";
 
 const tsheadid = "Turnstile-Token"
 
 export type Env = {
-    TURNSTILE_SECRET_KEY: string;
-    ACCOUNT_ID: string;
-    DB_ID: string;
-    ACCESS_TOKEN: string;
-    WRITE_TOKEN: string;
-    EMAIL: string;
-    ORIGIN: string; //CORS originの正規表現(テキスト方式の(new RegExp(xxx)))
-    BLOCKED_IP?: string; //,で分割されたIPリスト
+  TURNSTILE_SECRET_KEY: string;
+  DB: D1Database;
+  ORIGIN: string; //CORS originの正規表現(テキスト方式の(new RegExp(xxx)))
+  BLOCKED_IP?: string; //,で分割されたIPリスト
 };
 export const app = new Hono<{ Bindings: Env }>()
 let reg: RegExp|void;

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
 import { UncoolTurnstile } from "../components/Turnstile";
 import { tsheadid } from "../auth";
+import { turnstileErrorMSG } from "../utils/turnstile";
 
 type BulletBoxData = {
   title: string,
@@ -35,7 +36,9 @@ export const Vote = () => {
     })
     .then(e=>new Promise<[number,string]>(res=>e.text().then(t=>res([e.status,t]))))
     .then(e=>{
-      if(e[0] !== 200){
+      if(e[0] == 401)
+        setErr(turnstileErrorMSG(e[1]));
+      else if(e[0] !== 200){
         setErr("情報の取得に失敗しました: " + e[1]);
       }else{
         try{

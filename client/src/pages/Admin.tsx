@@ -1,8 +1,9 @@
 import "./Admin.scss"
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom"
 import { UncoolTurnstile } from "../components/Turnstile";
 import { tsheadid } from "../auth";
+import { turnstileErrorMSG } from "../utils/turnstile";
 
 export const Admin = () => {
  const median = (array: number[]) => {
@@ -24,11 +25,7 @@ export const Admin = () => {
   const [err, setErr] = useState("");
   const [isSending, setSending] = useState(false);
   const [ip_o_max, SetIPOMax] = useState(100);
-  const [voteurl, setVoteURL] = useState<string>();
-
-  useEffect(()=>{
-    setVoteURL(`${location.protocol}//${location.host}/vote/${token}`);
-  },[token])
+  const voteurl = useMemo(()=>`${location.protocol}//${location.host}/vote/${token}`, [token]);
 
   const [vdata, setVData] = useState<{
     meta: { title: string, options: string[] },
@@ -53,7 +50,9 @@ export const Admin = () => {
       }
     }).then(e=>new Promise<[number,string]>(res=>e.text().then(t=>res([e.status,t]))))
     .then(e=>{
-      if(e[0] !== 200){
+      if(e[0] == 401)
+        setErr(turnstileErrorMSG(e[1]));
+      else if(e[0] !== 200){
         setErr("エラー: " + e[1]);
       }else{
         try{
