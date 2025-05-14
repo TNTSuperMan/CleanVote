@@ -7,7 +7,7 @@ import { parseReq } from "./utils/parseReq";
 
 const voteReqBody = z.object({
   token: z.string(),
-  option: z.string()
+  option: z.number()
 })
 
 app.post("/vote", c => {

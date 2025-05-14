@@ -1,3 +1,4 @@
 name = "cleanvote_server"
 main = "src/index.ts"
 compatibility_date = "2025-01-24"
+preview_urls = false
