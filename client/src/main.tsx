@@ -14,6 +14,7 @@ import { Destroy } from './pages/Destroy';
 import { QA } from './pages/QA';
 
 createRoot(document.getElementById('root')!).render(<StrictMode>
+    <div className="warn">警告：現在メンテナンス中です。誤動作やバグがおこる可能性があります。</div>
     <BrowserRouter>
       <HomeButton/>
       <Routes>

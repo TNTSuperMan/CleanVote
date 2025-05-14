@@ -17,6 +17,13 @@ app.post('/subscribe', c => {
   const ip = CheckAndIP(c);
   return c.req.text().then(async b=>{
     const body = parseReq(b, subscribeReqBody);
+
+    if(
+      body.title.length > 256 ||
+      body.description.length > 688 ||
+      body.options.length > 32 ||
+      body.options.some(e=>e.length > 256))
+        throw new HTTPException(400, { message: "無効なJSON" })
     
     const pval = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
     const phashp = await sha256(pval);
