@@ -56,6 +56,7 @@ export const Tos = () => {
     <h3>5.変更</h3>
     運営者はユーザーの同意に関わらず自由に規約等を変更できます。<br/>
     最終変更: 2025年8月11日
+    プルリクエスト: <a href="https://github.com/TNTSuperMan/CleanVote/pull/23">#23</a>
     
     <h1>プライバシーポリシー</h1>
     <br/>
