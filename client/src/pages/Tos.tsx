@@ -55,7 +55,7 @@ export const Tos = () => {
     <a href="mailto:tnt-super-man@outlook.com">tnt-super-man@outlook.com</a>
     <h3>5.変更</h3>
     運営者はユーザーの同意に関わらず自由に規約等を変更できます。<br/>
-    最終変更: 2025年8月11日
+    最終変更: 2025年8月11日<br/>
     プルリクエスト: <a href="https://github.com/TNTSuperMan/CleanVote/pull/23">#23</a>
     
     <h1>プライバシーポリシー</h1>
