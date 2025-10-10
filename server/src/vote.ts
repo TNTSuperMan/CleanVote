@@ -22,7 +22,7 @@ app.post("/vote", async c => {
   
   const findr = (await d1("SELECT uuid, count FROM votes WHERE ip = ? AND token = ? AND option = ?",
     [ip, body.token, body.option.toString()])).results?.[0] as {uuid: string, count: number}|void;
-  console.log(findr)
+
   if(typeof findr == "object"){
     await d1("UPDATE votes SET count = ? WHERE uuid = ?",[
       (findr.count + 1).toString(),
