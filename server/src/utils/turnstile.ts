@@ -17,6 +17,7 @@ export const Turnstile = async (c: Context<{Bindings: Env}>, token: string, ip?:
     success: boolean,
     "error-codes": string[]
   } = await response.json();
+  
   if (!result.success) {
     throw new HTTPException(401, { message: JSON.stringify(result["error-codes"]) })
   }

@@ -8,23 +8,23 @@ import { parseReq } from "./utils/parseReq";
 
 const destroyReqBody = z.object({
   token: z.string(),
-  pass: z.string()
+  pass: z.string(),
 });
 
-app.post("/destroy", async c=>{
+app.post("/destroy", async c => {
   CheckAndIP(c);
   const body = await parseReq(c.req, destroyReqBody);
   
-  const ihash_promise = sha256(body.pass);
+  const pass_hash = await sha256(body.pass) ?? "";
   
   const d1 = d1Client(c);
   const vd = await d1("SELECT pass FROM ballot_boxes WHERE token = ?", [body.token]);
   const data = vd.results?.[0] as {pass: string};
   if(!data) throw new HTTPException(400, { message: "その投票先は存在しません。" })
-  const vdelres = await d1("DELETE FROM ballot_boxes WHERE token = ? AND pass = ?", [body.token, await ihash_promise ?? ""]);
+  const vdelres = await d1("DELETE FROM ballot_boxes WHERE token = ? AND pass = ?", [body.token, pass_hash]);
   console.log(vdelres);
   if(!vdelres.meta?.changes)
     throw new HTTPException(400, { message: "パスワードが違います。" })
   await d1("DELETE FROM votes WHERE token = ?", [body.token]);
   return c.text("");
-})
+});
