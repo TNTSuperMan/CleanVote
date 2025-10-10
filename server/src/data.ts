@@ -10,7 +10,7 @@ app.post("/data", async c => {
     .prepare('SELECT title, description, options FROM ballot_boxes WHERE token = ?')
     .bind(token)
     .first<{
-      titile: string;
+      title: string;
       description: string;
       options: string;
     }>();
