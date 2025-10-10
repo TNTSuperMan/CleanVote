@@ -15,8 +15,8 @@ app.post("/data", async c => {
     }>(token);
 
   if(!rawdata){
-    throw new HTTPException(404, { message: "この投票先は見つかりませんでした。" })
+    throw new HTTPException(404, { message: "この投票先は見つかりませんでした。" });
   }else{
-    return c.json(rawdata)
+    return c.json(rawdata);
   }
 });

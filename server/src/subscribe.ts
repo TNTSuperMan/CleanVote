@@ -24,18 +24,16 @@ app.post('/subscribe', async c => {
   }
   
   const pass = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
-  const phash = await sha256(pass);
+  const pass_hash = await sha256(pass) ?? "";
 
   const token = crypto.randomUUID();
-  if(!phash) {
-    throw new HTTPException(500, { message: "パスワードの生成に失敗しました" });
-  }
-  c.env.DB
-    .prepare('INSERT INTO [ballot_boxes] ("token", "createdat", "pass", "title", "description", "options", "ip") VALUES (?,?,?,?,?,?,?)')
+  
+  await c.env.DB
+    .prepare('INSERT INTO ballot_boxes ("token", "createdat", "pass", "title", "description", "options", "ip") VALUES (?,?,?,?,?,?,?)')
     .bind(
       token,
       new Date().toISOString(),
-      phash,
+      pass_hash,
       body.title,
       body.description,
       JSON.stringify(body.options),
