@@ -34,12 +34,10 @@ app.post("/destroy", async c => {
     .prepare('DELETE FROM ballot_boxes WHERE token = ? AND pass = ?')
     .bind(body.token, pass_hash)
     .run();
-  if(!result.meta?.changes) {
-    throw new HTTPException(400, { message: "投票先またはパスワードが違います。" });
+  if(!result.success || !result.meta?.changes) {
+    throw new HTTPException(500, { message: "削除に失敗しました" });
   } else {
-    await c.env.DB.batch([
-      c.env.DB.prepare('DELETE FROM votes WHERE token = ?').bind(body.token),
-    ]);
+    c.env.DB.prepare('DELETE FROM votes WHERE token = ?').bind(body.token).run();
     return c.text("");
   }
 });
