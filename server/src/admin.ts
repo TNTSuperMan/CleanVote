@@ -1,6 +1,5 @@
 import { HTTPException } from "hono/http-exception";
 import { app } from "./app";
-import { d1Client } from "./utils/d1";
 import { sha256 } from "hono/utils/crypto";
 import { CheckAndIP } from "./utils/check";
 import * as z from "@zod/mini";
@@ -17,35 +16,27 @@ app.post("/admin", async c => {
 
   const hash = await sha256(body.pass);
   
-  const d1 = d1Client(c);
-  const voteq = await d1(
-    'SELECT pass FROM ballot_boxes WHERE token = ?', [
-      body.token
-    ]
-  );
-  const data = voteq.results?.[0] as {pass: string};
-  if(!data) {
+  const box = await c.env.DB
+    .prepare('SELECT pass FROM ballot_boxes WHERE token = ?')
+    .bind(body.token)
+    .first<{ pass: string }>();
+  if(!box) {
     throw new HTTPException(400, { message: "その投票先は見つかりませんでした" });
   }
-  if(data.pass !== hash) {
+  if(box.pass !== hash) {
     throw new HTTPException(400, { message: "パスワードが違います。" });
   }
   else{
     const [votes, data] = await Promise.all([
-      d1(
-        'SELECT option, count FROM votes WHERE token = ?', [
-          body.token
-        ]
-      ),
-      d1(
-        "SELECT title, description, options FROM ballot_boxes WHERE token = ?", [
-          body.token
-        ]
-      )
+      c.env.DB
+        .prepare('SELECT option, count FROM votes WHERE token = ?')
+        .bind(body.token)
+        .all(),
+      c.env.DB
+        .prepare('SELECT title, description, options FROM ballot_boxes WHERE token = ?')
+        .bind(body.token)
+        .first(),
     ]);
-    return c.json({
-      votes: votes.results,
-      data: data.results?.[0]
-    });
+    return c.json({ votes, data });
   }
 });

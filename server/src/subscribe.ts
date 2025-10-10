@@ -1,7 +1,6 @@
 import { HTTPException } from 'hono/http-exception'
 import { app } from './app';
 import { sha256 } from 'hono/utils/crypto';
-import { d1Client } from './utils/d1';
 import { CheckAndIP } from './utils/check';
 import * as z from "@zod/mini";
 import { parseReq } from './utils/parseReq';
@@ -27,17 +26,22 @@ app.post('/subscribe', async c => {
   const pass = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(16))));
   const phash = await sha256(pass);
 
-  const d1 = d1Client(c);
   const token = crypto.randomUUID();
   if(!phash) {
     throw new HTTPException(500, { message: "パスワードの生成に失敗しました" });
   }
-  await d1(
-    'INSERT INTO [ballot_boxes] ("token", "createdat", "pass", "title", "description", "options", "ip") VALUES (?,?,?,?,?,?,?)', [
-      token, new Date().toISOString(), phash, body.title, body.description,
-      JSON.stringify(body.options), ip,
-    ]
-  );
+  c.env.DB
+    .prepare('INSERT INTO [ballot_boxes] ("token", "createdat", "pass", "title", "description", "options", "ip") VALUES (?,?,?,?,?,?,?)')
+    .bind(
+      token,
+      new Date().toISOString(),
+      phash,
+      body.title,
+      body.description,
+      JSON.stringify(body.options),
+      ip
+    )
+    .run();
   
   return c.json({ pass, token });
 });
