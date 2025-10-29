@@ -30,4 +30,4 @@ createRoot(document.getElementById('root')!).render(<StrictMode>
       </Routes>
     </BrowserRouter>
   </StrictMode>
-  )
+)

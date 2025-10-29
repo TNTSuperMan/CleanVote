@@ -1,32 +1,43 @@
 import { HTTPException } from "hono/http-exception";
 import { app } from "./app";
-import { d1Client } from "./utils/d1";
 import { sha256 } from "hono/utils/crypto";
 import { CheckAndIP } from "./utils/check";
 import * as z from "@zod/mini";
 import { parseReq } from "./utils/parseReq";
+import { isEqualHash } from "./utils/eqPass";
 
 const destroyReqBody = z.object({
   token: z.string(),
-  pass: z.string()
+  pass: z.string(),
 });
 
-app.post("/destroy",c=>{
+app.post("/destroy", async c => {
   CheckAndIP(c);
-  return c.req.text().then(async b=>{
-    const body = parseReq(b, destroyReqBody);
-    
-    const ihash_promise = sha256(body.pass);
-    
-    const d1 = d1Client(c);
-    const vd = await d1("SELECT pass FROM ballot_boxes WHERE token = ?", [body.token]);
-    const data = vd.results?.[0] as {pass: string};
-    if(!data) throw new HTTPException(400, { message: "その投票先は存在しません。" })
-    const vdelres = await d1("DELETE FROM ballot_boxes WHERE token = ? AND pass = ?", [body.token, await ihash_promise ?? ""]);
-    console.log(vdelres);
-    if(!vdelres.meta?.changes)
-      throw new HTTPException(400, { message: "パスワードが違います。" })
-    await d1("DELETE FROM votes WHERE token = ?", [body.token]);
+  const body = await parseReq(c.req, destroyReqBody);
+  
+  const pass_hash = await sha256(body.pass);
+
+  const box = await c.env.DB
+    .prepare('SELECT pass FROM ballot_boxes WHERE token = ?')
+    .bind(body.token)
+    .first<{ pass: string }>();
+  let forbiddenFlag = false;
+
+  if (!box) forbiddenFlag = true;
+  if (!isEqualHash(pass_hash, box?.pass ?? null)) forbiddenFlag = true;
+
+  if (forbiddenFlag) {
+    throw new HTTPException(403, { message: "投票先またはパスワードが違います" });
+  }
+
+  const result = await c.env.DB
+    .prepare('DELETE FROM ballot_boxes WHERE token = ? AND pass = ?')
+    .bind(body.token, pass_hash)
+    .run();
+  if(!result.success || !result.meta?.changes) {
+    throw new HTTPException(500, { message: "削除に失敗しました" });
+  } else {
+    c.env.DB.prepare('DELETE FROM votes WHERE token = ?').bind(body.token).run();
     return c.text("");
-  })
-})
+  }
+});

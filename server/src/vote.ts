@@ -1,39 +1,46 @@
 import { HTTPException } from "hono/http-exception";
 import { app } from "./app";
-import { d1Client } from "./utils/d1";
 import { CheckAndIP } from "./utils/check";
 import * as z from "@zod/mini";
 import { parseReq } from "./utils/parseReq";
 
 const voteReqBody = z.object({
   token: z.string(),
-  option: z.number()
-})
+  option: z.number(),
+});
 
-app.post("/vote", c => {
+app.post("/vote", async c => {
   const ip = CheckAndIP(c);
-  return c.req.text().then(async b=>{
-    const body = parseReq(b, voteReqBody);
+  const body = await parseReq(c.req, voteReqBody)
 
-    const d1 = d1Client(c);
+  const box = await c.env.DB
+    .prepare('SELECT token FROM ballot_boxes WHERE token = ?')
+    .bind(body.token)
+    .first();
+  
+  if (!box) {
+    throw new HTTPException(400, { message: "存在しない投票先です。" });
+  }
+  
+  const vote = await c.env.DB
+    .prepare('SELECT uuid, count FROM votes WHERE ip = ? AND token = ? AND option = ?')
+    .bind(ip, body.token, body.option.toString())
+    .first<{
+      uuid: string;
+      count: number;
+    }>();
 
-    const vfres = await d1("SELECT token FROM ballot_boxes WHERE token = ?",
-      [body.token])
-    
-    if(!vfres.results?.length) throw new HTTPException(400, { message: "存在しない投票先です。" })
-    
-    const findr = (await d1("SELECT uuid, count FROM votes WHERE ip = ? AND token = ? AND option = ?",
-      [ip, body.token, body.option.toString()])).results?.[0] as {uuid: string, count: number}|void;
-    console.log(findr)
-    if(typeof findr == "object"){
-      await d1("UPDATE votes SET count = ? WHERE uuid = ?",[
-        (findr.count + 1).toString(),
-        findr.uuid])
-    }else{
-      await d1('INSERT INTO votes ("uuid", "ip", "token", "option", "count") VALUES (?,?,?,?,?)',[
-        crypto.randomUUID(), ip, body.token, body.option.toString(), "1"])
-    }
-    
-    return c.text("")
-  })
-})
+  if (vote) {
+    await c.env.DB
+      .prepare('UPDATE votes SET count = ? WHERE uuid = ?')
+      .bind((vote.count + 1).toString(), vote.uuid)
+      .run();
+  } else {
+    await c.env.DB
+      .prepare('INSERT INTO votes ("uuid", "ip", "token", "option", "count") VALUES (?,?,?,?,?)')
+      .bind(crypto.randomUUID(), ip, body.token, body.option.toString(), "1")
+      .run();
+  }
+  
+  return c.text("");
+});
